@@ -1,0 +1,35 @@
+#Set Default Permissions
+Permission: true
+#Server Slots
+Slots: 56
+#Welcome Message
+WELCOMEMSG: "&6Willkommen, &b%Player%&6!"
+SERVERNAME: "&3&lKowaineko.de"
+#Server Motd
+#&0 black, &1 dark blue, &2 dark green, &3 dark aqua, &4 dark red, &5 dark purple, &6 gold, &7 gray
+#&8 dark gray, &9 blue, &a green, &b aqua, &c red, &d light purple, &e yellow, &f white 
+Motd: "&r&e&3&lKowaineko&r&l&3Craft&7 -  [V.1.16.5 Paper]\n&b"
+#Server Discord
+Discord: 'https://discord.gg/BzCDXbm'
+#Home-Port-Time
+Homecountdown: 3
+#Spawn-Port-Time
+Spawncountdown: 3
+#Request message
+Line1: "&7[&cLilli&7] >  &aTPA Anfrage von &6/sender/" 
+Line2: "&aSchreibe &b&l/tpaccept &aum zu akzeptieren oder &c&l/tpdeny &aum abzulehnen"
+#Request sent message
+RequestSent: "&7[&cLilli&7] > &aTPA Anfrage wurde gesendet zu &6/target/"
+#Request accepted or denied
+RequestAcceptedTeleport: "&6/sender/ &awurde zu dir teleportiert!"
+RequestAccepted: "&6/target/ &ahat den Teleport akzeptiert!"
+NoRequestToAccept: "&7[&cLilli&7] >  &7Keine Anfrage zum Akzeptieren!"
+RequestDeniedTeleport: "&7[&cLilli&7] >  &6/target/ &7hat die Anfrage abgelehnt!"
+RequestDenied: "&7[&cLilli&7] >  &7Du hast die Anfrage abgelehnt!"
+NoRequestToDeny: "&7[&cLilli&7] >  &7Keine Anfrage zum Ablehnen!"
+#Errors
+CooldownError: "&7[&cLilli&7] >  &7Die letzte bekommene TPA Anfrage ist abgelaufen!"
+PlayerInAnotherWorldError: "&7[&cLilli&7] >  &7Du kannst dich nicht zu einem Spieler in einer anderen Welt teleportieren!"
+SpecifyPlayerError: "&7[&cLilli&7] >  &7Bitte gib einen Spieler an!"
+PlayerDoesNotExistError: "&7[&cLilli&7] >  &7Dieser Spieler existiert nicht!"
+TpaFromConsoleError: "&cDu kannst diese Funktion nicht von der Console aus benutzen!"

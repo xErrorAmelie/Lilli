@@ -1,0 +1,52 @@
+name: Lilli
+version: '3.0.0'
+main: ccameliek.lilli.Lilli
+author: xErrorlie
+api-version: '1.20'
+commands:
+  gm:
+    description: Wechselt deinen Spielmodus.
+  fly:
+    description: Ändert deine Fluggeschwindigkeit.
+  invsee:
+    description: Öffnet das Inventar eines Spielers.
+  ping:
+    description: Zeigt deinen derzeitigen Ping.
+  ban:
+    description: Banne einen Spieler.
+  unban:
+    description: Entbanne einen Spieler.
+  rip:
+    description: Ein schöner Ban <3.
+  setspawn:
+    description: Setzt den Weltspawn.
+  spawn:
+    description: Teleportiert zum Spawn nach 5 Sekunden.
+  msg:
+    description: Schreibe einem Spieler.
+  lilli:
+    description: Lilli Help
+  tpa:
+    description: Schickt eine Teleport Anfrage.
+  tpaccept:
+    description: Akzeptiert eine Teleport Anfrage.
+  tpdeny:
+    description: Lehnt eine Teleport Anfrage ab.
+  slots:
+    description: Zeigt die Server Slots.
+  discord:
+    description: Zeigt den Discord Server Link.
+  back:
+    description: Teleportiert dich zurück.
+  reply:
+  r:
+  fixtps:
+  afk:
+  stats:
+  showtps:
+  mute:
+  unmute:
+  rtp:
+  rules:
+  regeln:
+  weltraumhelm:
