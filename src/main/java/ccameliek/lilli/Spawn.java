@@ -1,5 +1,6 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,9 +33,7 @@ public class Spawn implements CommandExecutor, Listener {
 
 		File file = new File("plugins//Lilli//spawn.yml");
 
-		if (p.getBedSpawnLocation() != null) {
-
-		} else {
+		if (p.getBedSpawnLocation() == null) {
 			if (!file.exists()) {
 				return;
 			}
@@ -47,7 +46,8 @@ public class Spawn implements CommandExecutor, Listener {
 			double pitch = cfg.getDouble("Pitch");
 			String worldname = cfg.getString("Worldname");
 
-			World welt = Bukkit.getWorld(worldname);
+            assert worldname != null;
+            World welt = Bukkit.getWorld(worldname);
 
 			loc.setX(x);
 			loc.setY(y);
@@ -66,9 +66,7 @@ public class Spawn implements CommandExecutor, Listener {
 	public void onJoinSpawn(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 
-		if (p.hasPlayedBefore()) {
-
-		} else {
+		if (!p.hasPlayedBefore()) {
 			File file = new File("plugins//Lilli//spawn.yml");
 			if (!file.exists()) {
 				p.sendMessage("Es wurde kein Spawn gesetzt");
@@ -78,7 +76,8 @@ public class Spawn implements CommandExecutor, Listener {
 			double y = cfg.getDouble("Y");
 			double z = cfg.getDouble("Z");
 			String worldname = cfg.getString("Worldname");
-			World world = Bukkit.getWorld(worldname);
+            assert worldname != null;
+            World world = Bukkit.getWorld(worldname);
 
 			Location loc = new Location(world, x, y, z);
 			p.teleport(loc);
@@ -109,7 +108,7 @@ public class Spawn implements CommandExecutor, Listener {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				p.sendMessage(ChatColor.RED + "Die Datei konnte auf dem Pfad nicht erstellt werden");
+				p.sendMessage(NamedTextColor.RED + "Die Datei konnte auf dem Pfad nicht erstellt werden");
 			}
 		}
 
@@ -135,7 +134,7 @@ public class Spawn implements CommandExecutor, Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		p.sendMessage(Lilli.prefix + ChatColor.GREEN + "Du hast den globalen Spawn gesetzt");
+		p.sendMessage(Lilli.prefix.toString() + NamedTextColor.GREEN + "Du hast den globalen Spawn gesetzt");
 
 		return true;
 	}

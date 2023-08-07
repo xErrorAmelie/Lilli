@@ -1,34 +1,125 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
+import net.megavex.scoreboardlibrary.api.sidebar.component.ComponentSidebarLayout;
+import net.megavex.scoreboardlibrary.api.sidebar.component.SidebarComponent;
+import net.megavex.scoreboardlibrary.api.sidebar.component.animation.CollectionSidebarAnimation;
+import net.megavex.scoreboardlibrary.api.sidebar.component.animation.SidebarAnimation;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-public class Scoreboard implements CommandExecutor {
 
-	public Scoreboard(Lilli plugin) {
-		this.console = Bukkit.getServer().getConsoleSender();
+public class Scoreboard implements Listener {
+    ConsoleCommandSender console;
+    private final Sidebar sidebar;
+    private final ComponentSidebarLayout componentSidebar;
+    private final SidebarAnimation<Component> titleAnimation;
 
-		this.plugin = plugin;
-	}
+    public Scoreboard(Lilli plugin, Sidebar sidebar) {
+        this.sidebar = sidebar;
+        this.console = Bukkit.getServer().getConsoleSender();
+        this.titleAnimation = createGradientAnimation(Component.text("SaMe.de", Style.style(TextDecoration.BOLD)));
+        var title = SidebarComponent.animatedLine(titleAnimation);
 
-	ConsoleCommandSender console;
-	private Lilli plugin;
+        SimpleDateFormat dtf = new SimpleDateFormat("HH:mm:ss");
 
-	int sched;
+        // Custom SidebarComponent, see below for how an implementation might look like
+
+        SidebarComponent lines = SidebarComponent.builder()
+                .addBlankLine()
+                .addDynamicLine(() -> {
+                    var time = dtf.format(new Date());
+                    return Component.text("Testupdates: " + time, NamedTextColor.WHITE);
+                })
+                .addBlankLine()
+                .addStaticLine(Component.text("oh miau!"))
+                .addBlankLine()
+                .addStaticLine(Component.text("Rang:", NamedTextColor.DARK_AQUA))
+                .addDynamicLine(() -> {
+                    if(PermissionCheck(sidebar.players()) !=  null) {
+                        return Component.text(PermissionCheck(sidebar.players())); //Achtung
+                    }else{
+                        return Component.text("PermissionCheck empty", NamedTextColor.DARK_AQUA);
+                    }
+                })
+                .addBlankLine()
+                .addStaticLine(Component.text("Geld:", NamedTextColor.DARK_AQUA))
+                .addStaticLine(Component.text("... Coins", NamedTextColor.WHITE))
+                .build();
+        this.componentSidebar = new ComponentSidebarLayout(title, lines);
+        Bukkit.broadcast(Component.text(sidebar.players().toString()));
+        (new BukkitRunnable () {
+            public void run() {
+                tick();
+            }
+        }).runTaskTimer(plugin, 20L, 20L);
+    }
+
+    public void tick() {
+        titleAnimation.nextFrame();
+        // Update sidebar title & lines
+        componentSidebar.apply(sidebar);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event){
+    }
+
+    String PermissionCheck(@NotNull Collection<Player> players) {
+        HashMap<String, String> teams = RangListener.teams;
+        String currentTeamName = null;
+        for (String perm : teams.keySet()) {
+            for (Player player : players) {
+                if (perm == null || player.hasPermission(perm)) {
+                    currentTeamName = teams.get(perm);
+                }
+            }
+        }
+        return currentTeamName;
+    }
+    private @NotNull SidebarAnimation<Component> createGradientAnimation(@NotNull Component text) {
+        float step = 1f / 8f;
+
+        TagResolver.Single textPlaceholder = Placeholder.component("text", text);
+        List<Component> frames = new ArrayList<>((int) (2f / step));
+
+        float phase = -1f;
+        while (phase < 1) {
+            frames.add(MiniMessage.miniMessage().deserialize("<gradient:aqua:dark_aqua:" + phase + "><text>", textPlaceholder));
+            phase += step;
+        }
+
+        return new CollectionSidebarAnimation<>(frames);
+    }
+}
+
+
+
+
+
+// On plugin shutdown:
+
+/*
+
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
-
-	@SuppressWarnings("deprecation")
 	static double[] tps = org.bukkit.Bukkit.getTPS();
-
 	@SuppressWarnings("deprecation")
 	public static void sendScoreboard(Player player) {
 		Scoreboard board = (Scoreboard) Bukkit.getScoreboardManager().getNewScoreboard();
@@ -44,7 +135,7 @@ public class Scoreboard implements CommandExecutor {
 		player.setScoreboard((org.bukkit.scoreboard.Scoreboard) board);
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public static void updateScoreboard(Player player) {
         player.getScoreboard();
         Objective obj = player.getScoreboard().getObjective("aaa") != null ? player.getScoreboard().getObjective("aaa") : player.getScoreboard().registerNewObjective("aaa", "bbb");
@@ -72,5 +163,5 @@ public class Scoreboard implements CommandExecutor {
 			p.sendMessage(ChatColor.RED + "Du hast keine Rechte dafür!");
 		}
 		return false;
-	}
-}
+	}*/
+

@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'ccameliek'
@@ -15,10 +16,31 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven{
+        name = "scoreboard"
+        url = "https://jitpack.io/"
+    }
+    maven {
+        url 'https://repo.codemc.io/repository/maven-snapshots/'
+    }
+
 }
 
 dependencies {
+    String scoreboardLibraryVersion = "2.0.0-RC11"
+    compileOnly 'com.github.retrooper.packetevents:spigot:2.0.0-SNAPSHOT'
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
+    implementation("com.github.megavexnetwork.scoreboard-library:scoreboard-library-api:$scoreboardLibraryVersion")
+    runtimeOnly("com.github.megavexnetwork.scoreboard-library:scoreboard-library-implementation:$scoreboardLibraryVersion")
+    implementation("com.github.megavexnetwork.scoreboard-library:scoreboard-library-extra-kotlin:$scoreboardLibraryVersion") // If using Kotlin
+
+    // Add packet adapter implementations you want:
+    runtimeOnly("com.github.megavexnetwork.scoreboard-library:scoreboard-library-modern:$scoreboardLibraryVersion") // 1.17+
+    runtimeOnly("com.github.megavexnetwork.scoreboard-library:scoreboard-library-packetevents:$scoreboardLibraryVersion") // 1.8+
+    runtimeOnly("com.github.megavexnetwork.scoreboard-library:scoreboard-library-v1_8_R3:$scoreboardLibraryVersion") // 1.8
+
+    // If using the 1.8 version implementation, add Adventure as well:
+    implementation("net.kyori:adventure-platform-bukkit:4.0.1")
 }
 
 def targetJavaVersion = 17
@@ -41,7 +63,30 @@ processResources {
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('paper-plugin.yml') {
+    filesMatching('plugin.yml') {
         expand props
     }
+}
+
+jar {
+    destinationDirectory.set(file("/home/llie/Music/Server ohne Name/plugins"))
+}
+
+shadowJar {
+    //relocate 'com.github.megavexnetwork.scoreboard-library', 'your.plugin.namespace.scoreboardlibrary'
+    //relocate 'net.kyori', 'your.plugin.namespace.adventure'
+        // Add more relocations for other packages if needed
+
+    processResources {
+        def props = [version: version]
+        inputs.properties props
+        filteringCharset 'UTF-8'
+        filesMatching('plugin.yml') {
+            expand props
+        }
+    }
+    archiveBaseName.set("$rootProject.name-$version-shadow")
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    destinationDirectory.set(file("/home/llie/Music/Server ohne Name/plugins"))
 }

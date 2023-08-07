@@ -3,6 +3,15 @@ version: '3.0.0'
 main: ccameliek.lilli.Lilli
 author: xErrorlie
 api-version: '1.20'
+depend:
+  - packetevents
+softdepend:
+      - ProtocolLib
+      - ProtocolSupport
+      - ViaVersion
+      - ViaBackwards
+      - ViaRewind
+      - Geyser-Spigot
 commands:
   gm:
     description: Wechselt deinen Spielmodus.

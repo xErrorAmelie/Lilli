@@ -1,5 +1,6 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -9,82 +10,78 @@ import java.util.HashMap;
 
 public class RangListener {
 
-	private static HashMap<String, String> teams;
+    public static HashMap<String, String> teams;
 
-	static {
-		teams = new HashMap<>();
-	}
+    static {
+        teams = new HashMap<>();
+    }
 
-	public void create(String name, int rank, String prefix, String suffix, String permission) {
-		String fullName = rank + "_" + name;
-		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-		Team t = board.getTeam(fullName);
+    public void create(String name, int rank, Component prefix, Component suffix, String permission) {
+        String fullName = rank + "_" + name;
+        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team team = board.getTeam(fullName);
 
-		if (t != null) {
-			t.unregister();
-		}
-		t = board.registerNewTeam(fullName);
+        if (team != null) {
+            team.unregister();
+        }
+        team = board.registerNewTeam(fullName);
 
-		if (prefix != null) {
-			t.setPrefix(prefix);
-		}
-		if (suffix != null) {
-			t.setSuffix(suffix);
-		}
-		teams.put(permission, fullName);
-	}
+        if (prefix != null) {
+            team.prefix(prefix);
+        }
+        if (suffix != null) {
+            team.suffix(suffix);
+        }
+        teams.put(permission, fullName);
+    }
 
-	@SuppressWarnings("deprecation")
-	public void addPlayer(Player p) {
-		Team t = null;
 
-		for (String perm : teams.keySet()) {
-			if (perm == null || p.hasPermission(perm)) {
-				String currentTeamName = teams.get(perm);
+    public void addPlayer(Player p) {
+        Team team = null;
 
-				if (t == null || this.getRank(currentTeamName) < this.getRank(t.getName())) {
-					t = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(currentTeamName);
-				}
+        for (String perm : teams.keySet()) {
+            if (perm == null || p.hasPermission(perm)) {
+                String currentTeamName = teams.get(perm);
 
-			}
-		}
+                if (team == null || this.getRank(currentTeamName) < this.getRank(team.getName())) {
+                    team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(currentTeamName);
+                }
 
-		if (t != null) {
-			t.addPlayer(p);
-		}
-	}
+            }
+        }
 
-	public void update() {
-		for (Player players : Bukkit.getOnlinePlayers()) {
-			this.removePlayer(players);
-			this.addPlayer(players);
-		}
-	}
+        if (team != null) {
+            team.addPlayer(p);
+        }
+    }
 
-	@SuppressWarnings("deprecation")
-	public void removePlayer(Player p) {
-		for (String teamName : teams.values()) {
-			Team t = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamName);
+    public void update() {
+        for (Player players : Bukkit.getOnlinePlayers()) {
+            this.removePlayer(players);
+            this.addPlayer(players);
+        }
+    }
 
-			if (t != null && t.hasPlayer(p)) {
-				t.removePlayer(p);
-			}
-		}
-	}
+    public void removePlayer(Player player) {
+        for (String teamName : teams.values()) {
+            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(teamName);
 
-	private int getRank(String teamName) {
-		if (!teamName.contains("_")) {
-			return -1;
-		}
+            if (team != null && team.hasPlayer(player)) {
+                team.removePlayer(player);
+            }
+        }
+    }
 
-		String[] array = teamName.split("_");
-		try {
-			int i = Integer.parseInt(array[0]);
-			return i;
-		} catch (NumberFormatException ex) {
-			return -1;
-		}
+    public int getRank(String teamName) {
+        if (!teamName.contains("_")) {
+            return -1;
+        }
 
-	}
-
+        String[] array = teamName.split("_");
+        try {
+            return Integer.parseInt(array[0]);
+        } catch (NumberFormatException ex) {
+            return -1;
+        }
+    }
 }

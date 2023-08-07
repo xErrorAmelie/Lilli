@@ -1,5 +1,7 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,32 +28,32 @@ public class Cmds implements Listener, CommandExecutor {
 	}
 
 	ConsoleCommandSender console;
-	private Lilli plugin;
+	private final Lilli plugin;
 
 	private int c;
 	private int i = 3;
 	private int DeathCount = 0;
 
-	private static Map<String, Integer> rtp = new HashMap<String, Integer>();
+	private static final Map<String, Integer> rtp = new HashMap<String, Integer>();
 
 //----------------------------------------------/reload------------------------------------------------------------
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (cmd.getName().equalsIgnoreCase("Lilli")) {
+		if (cmd.getName().equalsIgnoreCase("lilli")) {
 			if ((args.length == 1) && (args[0].equalsIgnoreCase("reload"))) {
-				if (!(sender instanceof Player)) {
+
 					if (sender.hasPermission("Lilli.reload")) {
 						this.plugin.reloadConfig();
-						sender.sendMessage(ChatColor.GREEN + Lilli.prefix + "Plugin reloaded");
+						sender.sendMessage(Lilli.prefix + "Plugin reloaded");
 						return true;
 					}
-				}
+
 			}
 		}
 //----------------------------------------------/spawn------------------------------------------------------------
 		Player p = (Player) sender;
 		{
+			if(cmd.getName().equalsIgnoreCase("spawn")) {
 			File file = new File("plugins//Lilli//spawn.yml");
 			YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
@@ -59,6 +61,7 @@ public class Cmds implements Listener, CommandExecutor {
 			double y = cfg.getDouble("Y");
 			double z = cfg.getDouble("Z");
 			String worldname = cfg.getString("Worldname");
+			assert worldname != null;
 			World world = Bukkit.getWorld(worldname);
 
 			Location loc = new Location(world, x, y, z);
@@ -78,7 +81,7 @@ public class Cmds implements Listener, CommandExecutor {
 
 						} else if (i < 1) {
 							p.teleport(loc);
-							p.sendMessage(Lilli.prefix + ChatColor.GREEN + "Du wurdest zum Spawn teleportiert!");
+							p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + "Du wurdest zum Spawn teleportiert!");
 							i--;
 							Bukkit.getScheduler().cancelTask(c);
 							i = 3;
@@ -86,8 +89,9 @@ public class Cmds implements Listener, CommandExecutor {
 					}
 				}, 0, 20);
 			}
-
 		}
+		}
+
 		// ----------------------------------------------/tpa------------------------------------------------------------
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("TpaFromConsoleError")));
@@ -153,25 +157,22 @@ public class Cmds implements Listener, CommandExecutor {
 		if (p.hasPermission("Lilli.admin.slots") || p.isOp()) {
 			if (label.equalsIgnoreCase("slots")) {
 				if (args.length == 0) {
-					p.sendMessage(Lilli.prefix + ChatColor.GREEN + "Der Server hat: " + ChatColor.GRAY + this.plugin.getConfig().getInt(".Slots") + ChatColor.GREEN + " Slots!");
+					p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + "Der Server hat: " + ChatColor.GRAY + this.plugin.getConfig().getInt(".Slots") + ChatColor.GREEN + " Slots!");
 					return false;
-				}
-
-				if (args[0].equalsIgnoreCase("set")) {
-					if (args.length == 2) {
-						int s = Integer.valueOf(args[1]);
+				}else if (args.length == 1) {
+						int s = Integer.valueOf(args[0]);
 						this.plugin.getConfig().set(".Slots", s);
 						this.plugin.saveConfig();
-						p.sendMessage(Lilli.prefix + ChatColor.GREEN + "Du hast die Serverslots erfolgreich auf " + ChatColor.GRAY + s + ChatColor.GREEN + " Slots gesetzt!");
+						p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + "Du hast die Serverslots erfolgreich auf " + ChatColor.GRAY + s + ChatColor.GREEN + " Slots gesetzt!");
 						return false;
 					}
-				}
+
 			}
 		}
 		// ----------------------------------------------/discord------------------------------------------------------------
 		if (label.equalsIgnoreCase("discord")) {
 			p.sendMessage(ChatColor.GREEN + " > Joine dem Server Discord: ");
-			p.sendMessage(ChatColor.WHITE + "" + this.plugin.getConfig().getString(".Discord"));
+			p.sendMessage(ChatColor.WHITE + plugin.getConfig().getString(".Discord"));
 		}
 		// -----------------------------------------------/fixtps-------------------------------------------------------------------
 		if ((label.equalsIgnoreCase("fixtps")) && (p.isOp() || (p.hasPermission("Lilli.admin.fixtps")))) {
@@ -188,7 +189,7 @@ public class Cmds implements Listener, CommandExecutor {
 					});
 				});
 			});
-			p.sendMessage(Lilli.prefix + ChatColor.GREEN + DeathCount + " nutzlose Mobs wurden beseitigt!");
+			p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + DeathCount + " nutzlose Mobs wurden beseitigt!");
 			DeathCount = 0;
 		}
 		if (label.equalsIgnoreCase("mute")) {

@@ -1,4 +1,4 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
