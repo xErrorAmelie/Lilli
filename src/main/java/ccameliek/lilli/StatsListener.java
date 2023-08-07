@@ -1,6 +1,6 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
@@ -9,22 +9,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 public class StatsListener implements CommandExecutor, Listener {
 
 	public StatsListener(Lilli plugin) {
 		this.console = Bukkit.getServer().getConsoleSender();
 
-		this.plugin = plugin;
 	}
 
 	ConsoleCommandSender console;
-	@SuppressWarnings("unused")
-	private Lilli plugin;
-
-	@SuppressWarnings("deprecation")
+	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
 		Player player = (Player) sender;
 		if (label.equalsIgnoreCase("stats")) {
 			if (args.length == 1) {
@@ -33,19 +30,19 @@ public class StatsListener implements CommandExecutor, Listener {
 				int timesincedeathmin = target.getStatistic(Statistic.TIME_SINCE_DEATH) / 20 / 60;
 				int playtime = target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60 / 60;
 				int playtimemin = target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60;
-				player.sendMessage(Lilli.kowaiprefix + ChatColor.GREEN + "Stats von " + ChatColor.AQUA + target.getName());
+				player.sendMessage(Lilli.kowaiprefix.toString() + NamedTextColor.GREEN + "Stats von " + NamedTextColor.AQUA + target.getName());
 				if (timesincedeath > 1) {
-					player.sendMessage(ChatColor.GRAY + "Spielzeit: " + ChatColor.GOLD + playtime + " Stunden");
+					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtime + " Stunden");
 				} else {
-					player.sendMessage(ChatColor.GRAY + "Spielzeit: " + ChatColor.GOLD + playtimemin + " Minuten");
+					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtimemin + " Minuten");
 				}
-				player.sendMessage(ChatColor.GRAY + "Tode: " + ChatColor.GOLD + target.getStatistic(Statistic.DEATHS));
-				player.sendMessage(ChatColor.GRAY + "Spielerkills: " + ChatColor.GOLD + target.getStatistic(Statistic.PLAYER_KILLS));
-				player.sendMessage(ChatColor.GRAY + "Mobkills: " + ChatColor.GOLD + target.getStatistic(Statistic.MOB_KILLS));
+				player.sendMessage(NamedTextColor.GRAY + "Tode: " + NamedTextColor.GOLD + target.getStatistic(Statistic.DEATHS));
+				player.sendMessage(NamedTextColor.GRAY + "Spielerkills: " + NamedTextColor.GOLD + target.getStatistic(Statistic.PLAYER_KILLS));
+				player.sendMessage(NamedTextColor.GRAY + "Mobkills: " + NamedTextColor.GOLD + target.getStatistic(Statistic.MOB_KILLS));
 				if (timesincedeath > 1) {
-					player.sendMessage(ChatColor.GRAY + "Letztes Mal gestorben:" + ChatColor.GOLD + " vor " + timesincedeath + " Stunden");
+					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeath + " Stunden");
 				} else {
-					player.sendMessage(ChatColor.GRAY + "Letztes Mal gestorben:" + ChatColor.GOLD + " vor " + timesincedeathmin + " Minuten");
+					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeathmin + " Minuten");
 				}
 			} else {
 				int timesincedeath = player.getStatistic(Statistic.TIME_SINCE_DEATH) / 20 / 60 / 60;
@@ -53,19 +50,19 @@ public class StatsListener implements CommandExecutor, Listener {
 				int playtime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60 / 60;
 				int playtimemin = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60;
 
-				player.sendMessage(Lilli.kowaiprefix + ChatColor.GREEN + "Stats von " + ChatColor.AQUA + player.getName());
+				player.sendMessage(Lilli.kowaiprefix.toString() + NamedTextColor.GREEN + "Stats von " + NamedTextColor.AQUA + player.getName());
 				if (playtime > 1) {
-					player.sendMessage(ChatColor.GRAY + "Spielzeit: " + ChatColor.GOLD + playtime + " Stunden");
+					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtime + " Stunden");
 				} else {
-					player.sendMessage(ChatColor.GRAY + "Spielzeit: " + ChatColor.GOLD + playtimemin + " Minuten");
+					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtimemin + " Minuten");
 				}
-				player.sendMessage(ChatColor.GRAY + "Tode: " + ChatColor.GOLD + player.getStatistic(Statistic.DEATHS));
-				player.sendMessage(ChatColor.GRAY + "Spielerkills: " + ChatColor.GOLD + player.getStatistic(Statistic.PLAYER_KILLS));
-				player.sendMessage(ChatColor.GRAY + "Mobkills: " + ChatColor.GOLD + player.getStatistic(Statistic.MOB_KILLS));
+				player.sendMessage(NamedTextColor.GRAY + "Tode: " + NamedTextColor.GOLD + player.getStatistic(Statistic.DEATHS));
+				player.sendMessage(NamedTextColor.GRAY + "Spielerkills: " + NamedTextColor.GOLD + player.getStatistic(Statistic.PLAYER_KILLS));
+				player.sendMessage(NamedTextColor.GRAY + "Mobkills: " + NamedTextColor.GOLD + player.getStatistic(Statistic.MOB_KILLS));
 				if (timesincedeath > 1) {
-					player.sendMessage(ChatColor.GRAY + "Letztes Mal gestorben:" + ChatColor.GOLD + " vor " + timesincedeath + " Stunden");
+					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeath + " Stunden");
 				} else {
-					player.sendMessage(ChatColor.GRAY + "Letztes Mal gestorben:" + ChatColor.GOLD + " vor " + timesincedeathmin + " Minuten");
+					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeathmin + " Minuten");
 				}
 			}
 		}

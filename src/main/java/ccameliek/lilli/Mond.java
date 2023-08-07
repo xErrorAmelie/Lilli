@@ -1,4 +1,4 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -105,11 +105,6 @@ public class Mond implements Listener, CommandExecutor {
 		} else {
 			p.removePotionEffect(PotionEffectType.JUMP);
 			p.removePotionEffect(PotionEffectType.SLOW_FALLING);
-			for (Player p1 : Bukkit.getOnlinePlayers()) {
-				if (p1.isOp()) {
-					p1.sendMessage(Lilli.prefix + e.getPlayer().getDisplayName() + ChatColor.GRAY + " hat den Mond verlassen!");
-				}
-			}
 		}
 	}
 }

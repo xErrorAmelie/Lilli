@@ -1,4 +1,4 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -20,24 +20,24 @@ public class Weltmessage implements Listener {
 	}
 
 	ConsoleCommandSender console;
-	private Lilli plugin;
+	private final Lilli plugin;
 
 	@EventHandler
-	public void onTeleport(PlayerTeleportEvent e) {
-		final Player p = e.getPlayer();
-		if (!p.isOp()) {
+	public void onTeleport(PlayerTeleportEvent event) {
+		final Player player = event.getPlayer();
+		if (!player.isOp()) {
 			(new BukkitRunnable() {
 				public void run() {
-					Location playerloc = p.getLocation();
+					Location playerloc = player.getLocation();
 					World world = playerloc.getWorld();
 					if (world.getName().contains("kreativ")) {
-						p.setGameMode(GameMode.CREATIVE);
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission set worldedit.*");
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission set worldguard.*");
-					} else if (p.hasPermission("worldedit.*") || p.hasPermission("worldguard.*")) {
-						p.setGameMode(GameMode.SURVIVAL);
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission unset worldedit.*");
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " permission unset worldguard.*");
+						player.setGameMode(GameMode.CREATIVE);
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set worldedit.*");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set worldguard.*");
+					} else if (player.hasPermission("worldedit.*") || player.hasPermission("worldguard.*")) {
+						player.setGameMode(GameMode.SURVIVAL);
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission unset worldedit.*");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission unset worldguard.*");
 					}
 				}
 			}).runTaskLater(this.plugin, 40L);
@@ -45,18 +45,18 @@ public class Weltmessage implements Listener {
 	}
 
 	@EventHandler
-	public void onJoinEvent(PlayerJoinEvent e) {
-		final Player p = e.getPlayer();
-		if (!p.isOp()) {
-			Location playerloc = p.getLocation();
+	public void onJoinEvent(PlayerJoinEvent event) {
+		final Player player = event.getPlayer();
+		if (!player.isOp()) {
+			Location playerloc = player.getLocation();
 			final World world = playerloc.getWorld();
 			(new BukkitRunnable() {
 				public void run() {
 					if (world.getName().contains("kreativ")) {
-						p.setGameMode(GameMode.CREATIVE);
-						p.sendMessage("Du hast die Welt '" + world.getName() + "' betreten, du bist jetzt im Kreativ-Modus");
+						player.setGameMode(GameMode.CREATIVE);
+						player.sendMessage("Du hast die Welt '" + world.getName() + "' betreten, du bist jetzt im Kreativ-Modus");
 					} else {
-						p.setGameMode(GameMode.SURVIVAL);
+						player.setGameMode(GameMode.SURVIVAL);
 					}
 				}
 			}).runTaskLater(this.plugin, 40L);

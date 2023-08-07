@@ -1,6 +1,6 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class BanListener implements CommandExecutor, Listener {
 	}
 
 	ConsoleCommandSender console;
-	private Lilli plugin;
+	private final Lilli plugin;
 	private String reason = "";
 
 	@EventHandler
@@ -30,7 +30,7 @@ public class BanListener implements CommandExecutor, Listener {
 		Player p = e.getPlayer();
 		if (p.isBanned()) {
 			e.setCancelled(true);
-			p.sendMessage(ChatColor.RED + "Du kannst nicht schreiben während du gebannt wirst!");
+			p.sendMessage(NamedTextColor.RED + "Du kannst nicht schreiben während du gebannt wirst!");
 		}
 	}
 
@@ -57,17 +57,17 @@ public class BanListener implements CommandExecutor, Listener {
 							Bukkit.getBanList(BanList.Type.NAME).pardon(name);
 							for (Player op : Bukkit.getOnlinePlayers()) {
 								if (op.isOp()) {
-									op.sendMessage(Lilli.prefix + ChatColor.AQUA + name + ChatColor.GREEN + " wurde erfolgreich entbannt!");
+									op.sendMessage(Lilli.prefix.toString() + NamedTextColor.AQUA + name + NamedTextColor.GREEN + " wurde erfolgreich entbannt!");
 								}
 							}
 						} else {
-							p.sendMessage(ChatColor.RED + "/unban <Name>");
+							p.sendMessage(NamedTextColor.RED + "/unban <Name>");
 						}
 					} else {
-						p.sendMessage(ChatColor.RED + "Du hast keine Rechte dafür!");
+						p.sendMessage(NamedTextColor.RED + "Du hast keine Rechte dafür!");
 					}
 				} else {
-					p.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.AQUA + name + ChatColor.RED + " ist nicht gebannt!");
+					p.sendMessage(NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + name + NamedTextColor.RED + " ist nicht gebannt!");
 				}
 			}
 		}
@@ -88,30 +88,32 @@ public class BanListener implements CommandExecutor, Listener {
 						if (!Bukkit.getOfflinePlayer(name).isBanned()) {
 							if (player.isOnline()) {
 								String bannedname = Bukkit.getPlayer(name).getDisplayName();
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + reason, null, banner);
+								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + reason, null, banner);
 								for (Player op : Bukkit.getOnlinePlayers()) {
 									if (op.isOp()) {
-										op.sendMessage(String.valueOf(Lilli.prefix) + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner + ChatColor.GRAY + " Grund: "
-												+ ChatColor.GRAY + reason);
+										op.sendMessage(String.valueOf(Lilli.prefix) + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner + NamedTextColor.GRAY + " Grund: "
+												+ NamedTextColor.GRAY + reason);
 									}
 								}
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + bannedname + ChatColor.RED + " wurde gebannt!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + bannedname + NamedTextColor.RED + " wurde gebannt!");
 								Player banned1 = Bukkit.getPlayer(name);
-								banned1.kickPlayer(plugin.serverpre + "\n\n" + ChatColor.RED + "Du wurdest gebannt. \nGrund: " + ChatColor.GRAY + reason);
+                                assert banned1 != null;
+                                banned1.kickPlayer(plugin.serverpre + "\n\n" + NamedTextColor.RED + "Du wurdest gebannt. \nGrund: " + NamedTextColor.GRAY + reason);
 
 							} else {
 								String bannedname = Bukkit.getOfflinePlayer(name).getName();
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + reason, null, banner);
+                                assert banned != null;
+                                Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + reason, null, banner);
 								for (Player op : Bukkit.getOnlinePlayers()) {
 									if (op.isOp()) {
-										op.sendMessage(String.valueOf(Lilli.prefix) + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner + ChatColor.GRAY + " Grund: "
-												+ ChatColor.GRAY + reason);
+										op.sendMessage(String.valueOf(Lilli.prefix) + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner + NamedTextColor.GRAY + " Grund: "
+												+ NamedTextColor.GRAY + reason);
 									}
 								}
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.RED + " wurde gebannt!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.RED + " wurde gebannt!");
 							}
 						} else {
-							p.sendMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + name + ChatColor.RED + " ist bereits gebannt!");
+							p.sendMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + name + NamedTextColor.RED + " ist bereits gebannt!");
 						}
 						reason = "";
 						// ------------------------------OHNE GRUND-----------------------------
@@ -122,37 +124,38 @@ public class BanListener implements CommandExecutor, Listener {
 						if (!Bukkit.getOfflinePlayer(name).isBanned()) {
 							if (player.isOnline()) {
 								String bannedname = Bukkit.getPlayer(name).getDisplayName();
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + "Du wurdest gebannt.", null, banner);
+								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + "Du wurdest gebannt.", null, banner);
 								for (Player op : Bukkit.getOnlinePlayers()) {
 									if (op.isOp()) {
-										op.sendMessage(Lilli.adminprefix + ChatColor.GRAY + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner
-												+ ChatColor.GRAY + "!");
+										op.sendMessage(Lilli.adminprefix.toString() + NamedTextColor.GRAY + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner
+												+ NamedTextColor.GRAY + "!");
 									}
 								}
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + bannedname + ChatColor.RED + " wurde gebannt!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + bannedname + NamedTextColor.RED + " wurde gebannt!");
 								Player banned1 = Bukkit.getPlayer(name);
-								banned1.kickPlayer(plugin.serverpre + "\n\n" + ChatColor.RED + "Du wurdest gebannt");
+                                assert banned1 != null;
+                                banned1.kickPlayer(plugin.serverpre + "\n\n" + NamedTextColor.RED + "Du wurdest gebannt");
 
 							} else {
 								String bannedname = Bukkit.getOfflinePlayer(name).getName();
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + "Du wurdest gebannt.", null, banner);
+								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + "Du wurdest gebannt.", null, banner);
 								for (Player op : Bukkit.getOnlinePlayers()) {
 									if (op.isOp()) {
-										op.sendMessage(Lilli.adminprefix + ChatColor.GRAY + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner
-												+ ChatColor.GRAY + "!");
+										op.sendMessage(Lilli.adminprefix.toString() + NamedTextColor.GRAY + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner
+												+ NamedTextColor.GRAY + "!");
 									}
 								}
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.RED + " wurde gebannt!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.RED + " wurde gebannt!");
 							}
 						} else {
-							p.sendMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + name + ChatColor.RED + " ist bereits gebannt!");
+							p.sendMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + name + NamedTextColor.RED + " ist bereits gebannt!");
 						}
 					} else {
-						p.sendMessage(ChatColor.RED + "/ban <Name> <Grund>");
+						p.sendMessage(NamedTextColor.RED + "/ban <Name> <Grund>");
 					}
 
 				} else {
-					p.sendMessage(ChatColor.RED + "Du hast keine Rechte dafür!");
+					p.sendMessage(NamedTextColor.RED + "Du hast keine Rechte dafür!");
 				}
 			} else {
 				sender.sendMessage("§cDieser Befehl ist nur für Spieler!");
@@ -176,10 +179,10 @@ public class BanListener implements CommandExecutor, Listener {
 							for (Player p1 : Bukkit.getOnlinePlayers()) {
 								p1.playSound(p1.getLocation(), Sound.MUSIC_DISC_CHIRP, 2.0F, 1.0F);
 							}
-							Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + reason, null, banner);
+							Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + reason, null, banner);
 							if (player.isOnline()) {
 								String bannedname = Bukkit.getPlayer(name).getDisplayName();
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.GRAY + "Ban-Prozess für " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.GRAY + "Ban-Prozess für " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
 								(new BukkitRunnable() {
 									public void run() {
 										for (Player p1 : Bukkit.getOnlinePlayers()) {
@@ -188,20 +191,21 @@ public class BanListener implements CommandExecutor, Listener {
 										}
 										for (Player op : Bukkit.getOnlinePlayers()) {
 											if (op.isOp()) {
-												op.sendMessage(String.valueOf(Lilli.prefix) + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner + ChatColor.GRAY
-														+ " Grund: " + ChatColor.GRAY + reason);
+												op.sendMessage(String.valueOf(Lilli.prefix) + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner + NamedTextColor.GRAY
+														+ " Grund: " + NamedTextColor.GRAY + reason);
 											}
 										}
-										Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + bannedname + ChatColor.RED + " wurde gebannt!");
+										Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + bannedname + NamedTextColor.RED + " wurde gebannt!");
 										Player banned1 = Bukkit.getPlayer(name);
-										banned1.kickPlayer(plugin.serverpre + "\n\n" + ChatColor.RED + "Du wurdest gebannt. \nGrund: " + ChatColor.GRAY + reason);
+                                        assert banned1 != null;
+                                        banned1.kickPlayer(plugin.serverpre + "\n\n" + NamedTextColor.RED + "Du wurdest gebannt. \nGrund: " + NamedTextColor.GRAY + reason);
 										reason = "";
 									}
 								}).runTaskLater(this.plugin, 660L);
 
 							} else {
 								String bannedname = Bukkit.getOfflinePlayer(name).getName();
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.GRAY + "Ban-Prozess für " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.GRAY + "Ban-Prozess für " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
 								(new BukkitRunnable() {
 									public void run() {
 										for (Player p1 : Bukkit.getOnlinePlayers()) {
@@ -210,17 +214,17 @@ public class BanListener implements CommandExecutor, Listener {
 										}
 										for (Player op : Bukkit.getOnlinePlayers()) {
 											if (op.isOp()) {
-												op.sendMessage(String.valueOf(Lilli.prefix) + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner + ChatColor.GRAY
-														+ " Grund: " + ChatColor.GRAY + reason);
+												op.sendMessage(String.valueOf(Lilli.prefix) + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner + NamedTextColor.GRAY
+														+ " Grund: " + NamedTextColor.GRAY + reason);
 											}
 										}
-										Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.RED + " wurde gebannt!");
+										Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.RED + " wurde gebannt!");
 										reason = "";
 									}
 								}).runTaskLater(this.plugin, 660L);
 							}
 						} else {
-							p.sendMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + name + ChatColor.RED + " ist bereits gebannt!");
+							p.sendMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + name + NamedTextColor.RED + " ist bereits gebannt!");
 						}
 
 						// -------------OHNE GRUND-----------------
@@ -234,8 +238,9 @@ public class BanListener implements CommandExecutor, Listener {
 							}
 							if (player.isOnline()) {
 								String bannedname = Bukkit.getPlayer(name).getDisplayName();
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.GRAY + "Ban-Prozess für " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + "Du wurdest gebannt.", null, banner);
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.GRAY + "Ban-Prozess für " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
+                                assert banned != null;
+                                Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + "Du wurdest gebannt.", null, banner);
 								(new BukkitRunnable() {
 									public void run() {
 										for (Player p1 : Bukkit.getOnlinePlayers()) {
@@ -246,21 +251,23 @@ public class BanListener implements CommandExecutor, Listener {
 										}
 										Player banned1 = Bukkit.getPlayer(name);
 
-										banned1.kickPlayer(plugin.serverpre + "\n\n" + ChatColor.RED + "Du wurdest gebannt");
+                                        assert banned1 != null;
+                                        banned1.kickPlayer(plugin.serverpre + "\n\n" + NamedTextColor.RED + "Du wurdest gebannt");
 
 										for (Player op : Bukkit.getOnlinePlayers()) {
 											if (op.isOp()) {
-												op.sendMessage(Lilli.adminprefix + ChatColor.GRAY + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner
-														+ ChatColor.GRAY + "!");
+												op.sendMessage(Lilli.adminprefix.toString() + NamedTextColor.GRAY + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner
+														+ NamedTextColor.GRAY + "!");
 											}
 										}
-										Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.RED + " wurde gebannt!");
+										Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.RED + " wurde gebannt!");
 									}
 								}).runTaskLater(this.plugin, 660L);
 							} else {
 								String bannedname = Bukkit.getOfflinePlayer(name).getName();
-								Bukkit.broadcastMessage(Lilli.prefix + ChatColor.GRAY + "Ban-Prozess für " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
-								Bukkit.getBanList(BanList.Type.NAME).addBan(banned, ChatColor.DARK_RED + "Du wurdest gebannt.", null, banner);
+								Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.GRAY + "Ban-Prozess für " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " gestartet! 30 Sekunden verbleibend!");
+                                assert banned != null;
+                                Bukkit.getBanList(BanList.Type.NAME).addBan(banned, NamedTextColor.DARK_RED + "Du wurdest gebannt.", null, banner);
 								(new BukkitRunnable() {
 									public void run() {
 										for (Player p1 : Bukkit.getOnlinePlayers()) {
@@ -271,22 +278,22 @@ public class BanListener implements CommandExecutor, Listener {
 										}
 										for (Player op : Bukkit.getOnlinePlayers()) {
 											if (op.isOp()) {
-												op.sendMessage(Lilli.adminprefix + ChatColor.GRAY + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.GRAY + " wurde gebannt von " + banner
-														+ ChatColor.GRAY + "!");
+												op.sendMessage(Lilli.adminprefix.toString() + NamedTextColor.GRAY + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.GRAY + " wurde gebannt von " + banner
+														+ NamedTextColor.GRAY + "!");
 											}
 										}
-										Bukkit.broadcastMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + bannedname + ChatColor.RED + " wurde gebannt!");
+										Bukkit.broadcastMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + bannedname + NamedTextColor.RED + " wurde gebannt!");
 									}
 								}).runTaskLater(this.plugin, 660L);
 							}
 						} else {
-							p.sendMessage(Lilli.prefix + ChatColor.RED + "Der Spieler " + ChatColor.AQUA + name + ChatColor.RED + " ist bereits gebannt!");
+							p.sendMessage(Lilli.prefix.toString() + NamedTextColor.RED + "Der Spieler " + NamedTextColor.AQUA + name + NamedTextColor.RED + " ist bereits gebannt!");
 						}
 					} else {
-						p.sendMessage(ChatColor.RED + "/ban <Name> <Grund>");
+						p.sendMessage(NamedTextColor.RED + "/ban <Name> <Grund>");
 					}
 				} else {
-					p.sendMessage(ChatColor.RED + "Du hast keine Rechte dafür!");
+					p.sendMessage(NamedTextColor.RED + "Du hast keine Rechte dafür!");
 				}
 			} else {
 				sender.sendMessage("§cDieser Befehl ist nur für Spieler!");

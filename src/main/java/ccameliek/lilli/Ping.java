@@ -1,13 +1,14 @@
-package ccameliek.lilli3;
+package ccameliek.lilli;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class Ping implements CommandExecutor {
 
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
 
 		Player p = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("ping")) {
