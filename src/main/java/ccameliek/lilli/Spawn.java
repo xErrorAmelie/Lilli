@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -69,7 +70,7 @@ public class Spawn implements CommandExecutor, Listener {
 		if (!p.hasPlayedBefore()) {
 			File file = new File("plugins//Lilli//spawn.yml");
 			if (!file.exists()) {
-				p.sendMessage("Es wurde kein Spawn gesetzt");
+				p.sendMessage(Component.text("Es wurde kein Spawn gesetzt"));
 			}
 			YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 			double x = cfg.getDouble("X");
@@ -108,7 +109,7 @@ public class Spawn implements CommandExecutor, Listener {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				p.sendMessage(NamedTextColor.RED + "Die Datei konnte auf dem Pfad nicht erstellt werden");
+				p.sendMessage(Component.text("Die Datei konnte auf dem Pfad nicht erstellt werden").color(NamedTextColor.RED));
 			}
 		}
 
@@ -134,7 +135,7 @@ public class Spawn implements CommandExecutor, Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		p.sendMessage(Lilli.prefix.toString() + NamedTextColor.GREEN + "Du hast den globalen Spawn gesetzt");
+		p.sendMessage(Lilli.adminprefix.append(Component.text("Du hast den globalen Spawn gesetzt").color(NamedTextColor.GREEN)));
 
 		return true;
 	}

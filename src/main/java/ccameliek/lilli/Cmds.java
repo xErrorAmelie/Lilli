@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
@@ -73,15 +74,15 @@ public class Cmds implements Listener, CommandExecutor {
 					@Override
 					public void run() {
 						if (i > 1) {
-							p.sendMessage(ChatColor.GRAY + "Teleport in " + i + " Sekunden");
+							p.sendMessage(Component.text("Teleport in " + i + " Sekunden").color(NamedTextColor.GRAY));
 							i--;
 						} else if (i == 1) {
-							p.sendMessage(ChatColor.GRAY + "Teleport in " + i + " Sekunde");
+							p.sendMessage(Component.text("Teleport in " + i + " Sekunde").color(NamedTextColor.GRAY));
 							i--;
 
-						} else if (i < 1) {
+						} else {
 							p.teleport(loc);
-							p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + "Du wurdest zum Spawn teleportiert!");
+							p.sendMessage(Lilli.prefix.append(Component.text("Du wurdest zum Spawn teleportiert!").color(NamedTextColor.GREEN)));
 							i--;
 							Bukkit.getScheduler().cancelTask(c);
 							i = 3;
@@ -171,8 +172,8 @@ public class Cmds implements Listener, CommandExecutor {
 		}
 		// ----------------------------------------------/discord------------------------------------------------------------
 		if (label.equalsIgnoreCase("discord")) {
-			p.sendMessage(ChatColor.GREEN + " > Joine dem Server Discord: ");
-			p.sendMessage(ChatColor.WHITE + plugin.getConfig().getString(".Discord"));
+			p.sendMessage(Component.text(" > Joine dem Server Discord: ").color(NamedTextColor.GREEN));
+			p.sendMessage(Component.text(Objects.requireNonNull(plugin.getConfig().getString(".Discord"))).color(NamedTextColor.GREEN));
 		}
 		// -----------------------------------------------/fixtps-------------------------------------------------------------------
 		if ((label.equalsIgnoreCase("fixtps")) && (p.isOp() || (p.hasPermission("Lilli.admin.fixtps")))) {
@@ -192,6 +193,15 @@ public class Cmds implements Listener, CommandExecutor {
 			p.sendMessage(Lilli.prefix.toString() + ChatColor.GREEN + DeathCount + " nutzlose Mobs wurden beseitigt!");
 			DeathCount = 0;
 		}
+		// ---------------------------------------------/ping--------------------------------------------------
+		if (cmd.getName().equalsIgnoreCase("ping")) {
+			if (args.length == 0) {
+				p.sendMessage(Lilli.prefix + "Du hast einen Ping von §c" + p.getPing() + "§7 ms");
+			} else {
+				p.sendMessage(Lilli.prefix + "Du hast keine §cRechte §7dafür.");
+			}
+		}
+		// -------------------------------------------/mute--------------------------------------------------------------------
 		if (label.equalsIgnoreCase("mute")) {
 			if (p.hasPermission("lilli.admin.mute") || p.isOp()) {
 				if (args.length == 1) {

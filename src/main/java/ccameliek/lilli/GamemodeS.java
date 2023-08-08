@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -19,31 +20,31 @@ public class GamemodeS implements CommandExecutor
                      if (args.length == 1) {
                          if (args[0].equalsIgnoreCase("0")) {
                              p.setGameMode(GameMode.SURVIVAL);
-                             p.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "Du bist jetzt im GameMode 0");
+                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 0").color(NamedTextColor.GRAY)));
                              return true;
                          } else if (args[0].equalsIgnoreCase("1")) {
                              p.setGameMode(GameMode.CREATIVE);
-                             p.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "Du bist jetzt im GameMode 1");
+                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 1").color(NamedTextColor.GRAY)));;
                              return true;
                          } else if (args[0].equalsIgnoreCase("2")) {
                              p.setGameMode(GameMode.ADVENTURE);
-                             p.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "Du bist jetzt im GameMode 2");
+                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 2").color(NamedTextColor.GRAY)));
                              return true;
                          } else if (args[0].equalsIgnoreCase("3")) {
                              p.setGameMode(GameMode.SPECTATOR);
-                             p.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "Du bist jetzt im GameMode 3");
+                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 3").color(NamedTextColor.GRAY)));
                              return true;
                          }
                      } else {
-                         sender.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "/gm [0 bis 3]");
+                         sender.sendMessage(Lilli.adminprefix.append(Component.text("/gm [0 bis 3]").color(NamedTextColor.GRAY)));
                          return true;
                      }
                  } else {
-                     sender.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "Du hast nicht die Berechtigung dies zu tun!");
+                     sender.sendMessage(Lilli.adminprefix.append(Component.text("Du hast nicht die Berechtigung dies zu tun!").color(NamedTextColor.GRAY)));
                      return true;
                  }
              } else {
-                 sender.sendMessage(NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Lilli" + NamedTextColor.GRAY + "] " + "/gm [0 bis 3]");
+                 sender.sendMessage(Lilli.adminprefix.append(Component.text("/gm [0 bis 3]").color(NamedTextColor.GRAY)));
                  return true;
              }
              return false;
