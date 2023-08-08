@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
@@ -224,47 +225,46 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-
         if (player.hasPermission("Lilli.admin")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.admin).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.admin).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.supporter")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.supporter).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.supporter).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.mod")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.moderator).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                            .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.moderator).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.stammspieler")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.stammspieler).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.stammspieler).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.spielerplus")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.spielerplus).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.spielerplus).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.elite")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.elite).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.elite).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.neko")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.neko).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.neko).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.dev")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.developer).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.developer).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else if (player.hasPermission("Lilli.iwie")) {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.iwie).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.iwie).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         } else {
-            event.quitMessage(Component.text("<<").color(NamedTextColor.DARK_GRAY)
-                    .append(Lilli.spieler).append(Component.text(player.getName())).color(NamedTextColor.AQUA)
-                    .append(Component.text(" hat den Server verlassen!")).color(NamedTextColor.RED));
+            event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
+                    .append(Lilli.spieler).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                    .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
         }
     }
 

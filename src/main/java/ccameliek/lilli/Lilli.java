@@ -79,8 +79,8 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Player> tpa = new HashMap<Player, Player>();
     ArrayList<Player> tpaSent = new ArrayList<Player>();
     private boolean perms;
-    private ScoreboardLibrary scoreboardLibrary;
-    private Sidebar sidebar;
+    public ScoreboardLibrary scoreboardLibrary;
+    public Sidebar sidebar;
 
     public static Lilli getInstance() {
         return instance;
@@ -105,7 +105,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
 
         Objects.requireNonNull(getCommand("gm")).setExecutor(new GamemodeS());
         Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyS());
-        Objects.requireNonNull(getCommand("ping")).setExecutor(new Ping());
+        Objects.requireNonNull(getCommand("ping")).setExecutor(new Cmds(this));
         Objects.requireNonNull(getCommand("invsee")).setExecutor(new Invsee());
         Objects.requireNonNull(getCommand("ban")).setExecutor(new BanListener(this));
         Objects.requireNonNull(getCommand("rip")).setExecutor(new BanListener(this));
@@ -181,6 +181,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        new RangListener().addPlayer(event.getPlayer());
         sidebar.addPlayer(event.getPlayer());
         Bukkit.broadcast(Component.text("Test(!): " + sidebar.players().toString()));
         (new BukkitRunnable() {
@@ -219,10 +220,10 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
                     Player p = (Player) sender;
                     p.teleport((Location) this.mm.get(p.getName()));
                 } else {
-                    sender.sendMessage(NamedTextColor.RED + "Du hast keine letzte Position die gespeichert wurde!");
+                    sender.sendMessage(Component.text("Du hast keine letzte Position die gespeichert wurde!").color(NamedTextColor.RED));
                 }
             } else {
-                sender.sendMessage(NamedTextColor.RED + "Du hast keine Rechte dafür!");
+                sender.sendMessage(Component.text("Du hast keine Rechte dafür!").color(NamedTextColor.RED));
             }
         }
         return false;
