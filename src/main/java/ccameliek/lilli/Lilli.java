@@ -122,7 +122,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
         Objects.requireNonNull(getCommand("reply")).setExecutor(new Msg());
         Objects.requireNonNull(getCommand("r")).setExecutor(new Msg());
         Objects.requireNonNull(getCommand("fixtps")).setExecutor(new Cmds(this));
-        Objects.requireNonNull(getCommand("afk")).setExecutor(new AFK());
+        Objects.requireNonNull(getCommand("afk")).setExecutor(new Cmds(this));
         Objects.requireNonNull(getCommand("stats")).setExecutor(new StatsListener(this));
         //Objects.requireNonNull(getCommand("showtps")).setExecutor(new Scoreboard(this));
         Objects.requireNonNull(getCommand("mute")).setExecutor(new Cmds(this));

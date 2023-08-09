@@ -88,11 +88,10 @@ public class Spawn implements CommandExecutor, Listener {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-		if (!(sender instanceof Player)) {
+		if (!(sender instanceof Player p)) {
 			System.out.println("???");
 			return true;
 		}
-		Player p = (Player) sender;
 
 		if (!p.hasPermission("Lilli.setspawn")) {
 			p.sendMessage("Du hast keine Permission");

@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -30,19 +31,21 @@ public class StatsListener implements CommandExecutor, Listener {
 				int timesincedeathmin = target.getStatistic(Statistic.TIME_SINCE_DEATH) / 20 / 60;
 				int playtime = target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60 / 60;
 				int playtimemin = target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60;
-				player.sendMessage(Lilli.kowaiprefix.toString() + NamedTextColor.GREEN + "Stats von " + NamedTextColor.AQUA + target.getName());
+				player.sendMessage(Lilli.kowaiprefix.append(Component.text("Stats von ").color(NamedTextColor.GREEN).append(Component.text(target.getName())).color(NamedTextColor.AQUA)));
 				if (timesincedeath > 1) {
-					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtime + " Stunden");
+					player.sendMessage(Component.text("Spielzeit: ").color(NamedTextColor.GRAY).append(Component.text(playtime + " Stunden").color(NamedTextColor.GOLD)));
 				} else {
-					player.sendMessage(NamedTextColor.GRAY + "Spielzeit: " + NamedTextColor.GOLD + playtimemin + " Minuten");
+					player.sendMessage(Component.text("Spielzeit: ").color(NamedTextColor.GRAY).append(Component.text(playtimein + " Minuten").color(NamedTextColor.GOLD)));
+
 				}
-				player.sendMessage(NamedTextColor.GRAY + "Tode: " + NamedTextColor.GOLD + target.getStatistic(Statistic.DEATHS));
-				player.sendMessage(NamedTextColor.GRAY + "Spielerkills: " + NamedTextColor.GOLD + target.getStatistic(Statistic.PLAYER_KILLS));
-				player.sendMessage(NamedTextColor.GRAY + "Mobkills: " + NamedTextColor.GOLD + target.getStatistic(Statistic.MOB_KILLS));
+				player.sendMessage(Component.text("Tode: ").color(NamedTextColor.GRAY).append(Component.text(target.getStatistic(Statistic.DEATHS)).color(NamedTextColor.GOLD)));
+				player.sendMessage(Component.text("Spielerkills: ").color(NamedTextColor.GRAY).append(Component.text(target.getStatistic(Statistic.PLAYER_KILLS)).color(NamedTextColor.GOLD)));
+				player.sendMessage(Component.text("Mobkills: ").color(NamedTextColor.GRAY).append(Component.text(target.getStatistic(Statistic.MOB_KILLS)).color(NamedTextColor.GOLD)));
+
 				if (timesincedeath > 1) {
-					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeath + " Stunden");
+					player.sendMessage(Component.text("Letztes Mal gestorben:").color(NamedTextColor.GRAY).append(Component.text(" vor " + timesincedeath + " Stunden").color(NamedTextColor.GOLD)));
 				} else {
-					player.sendMessage(NamedTextColor.GRAY + "Letztes Mal gestorben:" + NamedTextColor.GOLD + " vor " + timesincedeathmin + " Minuten");
+					player.sendMessage(Component.text("Letztes Mal gestorben:").color(NamedTextColor.GRAY).append(Component.text(" vor " + timesincedeathmin + " Minuten").color(NamedTextColor.GOLD)));
 				}
 			} else {
 				int timesincedeath = player.getStatistic(Statistic.TIME_SINCE_DEATH) / 20 / 60 / 60;
