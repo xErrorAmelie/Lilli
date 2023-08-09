@@ -1,8 +1,10 @@
 package ccameliek.lilli;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,9 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class Mond implements Listener{
+public class Mond implements Listener, CommandExecutor {
 
 	public Mond(Lilli plugin) {
 		this.console = Bukkit.getServer().getConsoleSender();
@@ -25,25 +26,33 @@ public class Mond implements Listener{
 	}
 
 	ConsoleCommandSender console;
-	private final Lilli plugin;
+	private Lilli plugin;
 	int Helmet = 0;
 
-	private static final Map<String, Boolean> message = new HashMap<String, Boolean>();
+	private static Map<String, Boolean> message = new HashMap<String, Boolean>();
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		Player p = (Player) sender;
+		if (cmd.getName().equalsIgnoreCase("weltraumhelm")) {
+			Bukkit.dispatchCommand(p, "give @s minecraft:iron_helmet{display:{Name:'{\"text\":\"Weltraumhelm\",\"color\":\"light_purple\"}'}} 1");
+		}
+		return false;
+	}
 
 	@EventHandler
-	public void onMoonPort(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		if (player.getWorld().getName().contains("Mond")) {
+	public void onMoonPort(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+		if (p.getWorld().getName().contains("Mond")) {
 			message.put("Helmetmessage", false);
 			message.put("NoHelmetmessage", false);
 
 			(new BukkitRunnable() {
 				public void run() {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100000, 3));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 0));
+					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100000, 3));
+					p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 0));
 					for (Player p1 : Bukkit.getOnlinePlayers()) {
 						if (p1.isOp()) {
-							p1.sendMessage(Lilli.prefix.append(Component.text(player.displayName() + " hat den Mond betreten!").color(NamedTextColor.GRAY)));
+							p1.sendMessage(Lilli.prefix + e.getPlayer().getDisplayName() + ChatColor.GRAY + " hat den Mond betreten!");
 						}
 					}
 					Helmet = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -51,42 +60,42 @@ public class Mond implements Listener{
 						@Override
 						public void run() {
 
-							if (player.isDead()) {
+							if (p.isDead()) {
 								Bukkit.getServer().getScheduler().cancelTask(Helmet);
 							}
-							if (!player.getWorld().getName().contains("Mond")) {
+							if (!p.getWorld().getName().contains("Mond")) {
 								Bukkit.getServer().getScheduler().cancelTask(Helmet);
 							}
-							if (player.getInventory().getHelmet() != null) {
+							if (p.getInventory().getHelmet() != null) {
 								// p.sendMessage(": "+
 								// p.getInventory().getHelmet().getItemMeta().getDisplayName());
-								if (player.getInventory().getHelmet().getType().toString().contains("IRON_HELMET")
-										&& (Objects.requireNonNull(player.getInventory().getHelmet().getItemMeta().displayName()).contains(Component.text("Weltraumhelm").color(NamedTextColor.LIGHT_PURPLE)))) {
-									if (!message.get("Helmetmessage")) {
-										player.sendMessage(Component.text("Du hast einen Weltraumhelm auf, du verlierst keine Luft!").color(NamedTextColor.GREEN));
+								if (p.getInventory().getHelmet().getType().toString().contains("IRON_HELMET")
+										&& (p.getInventory().getHelmet().getItemMeta().getDisplayName().contains(ChatColor.LIGHT_PURPLE + "Weltraumhelm"))) {
+									if (message.get("Helmetmessage") == false) {
+										p.sendMessage(ChatColor.GREEN + "Du hast einen Weltraumhelm auf, du verlierst keine Luft!");
 										message.put("Helmetmessage", true);
 										message.put("NoHelmetmessage", false);
 									}
 								} else {
-									if (!message.get("NoHelmetmessage")) {
-										player.sendMessage(Component.text("Du hast keinen Weltraumhelm auf!").color(NamedTextColor.RED));
+									if (message.get("NoHelmetmessage") == false) {
+										p.sendMessage(ChatColor.RED + "Du hast keinen Weltraumhelm auf!");
 										message.put("NoHelmetmessage", true);
 										message.put("Helmetmessage", false);
 									}
-									player.setRemainingAir(-1);
-									if (player.getRemainingAir() <= 1) {
-										player.damage(0.01);
+									p.setRemainingAir(-1);
+									if (p.getRemainingAir() <= 1) {
+										p.damage(0.01);
 									}
 								}
 							} else {
-								if (!message.get("NoHelmetmessage")) {
-									player.sendMessage(Component.text("Du hast keinen Weltraumhelm auf!").color(NamedTextColor.RED));
+								if (message.get("NoHelmetmessage") == false) {
+									p.sendMessage(ChatColor.RED + "Du hast keinen Weltraumhelm auf!");
 									message.put("NoHelmetmessage", true);
 									message.put("Helmetmessage", false);
 								}
-								player.setRemainingAir(-1);
-								if (player.getRemainingAir() <= 1) {
-									player.damage(0.01);
+								p.setRemainingAir(-1);
+								if (p.getRemainingAir() <= 1) {
+									p.damage(0.01);
 								}
 							}
 						}
@@ -94,8 +103,8 @@ public class Mond implements Listener{
 				}
 			}).runTaskLater(this.plugin, 40L);
 		} else {
-			player.removePotionEffect(PotionEffectType.JUMP);
-			player.removePotionEffect(PotionEffectType.SLOW_FALLING);
+			p.removePotionEffect(PotionEffectType.JUMP);
+			p.removePotionEffect(PotionEffectType.SLOW_FALLING);
 		}
 	}
 }

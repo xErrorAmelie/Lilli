@@ -92,20 +92,6 @@ public class Cmds implements Listener, CommandExecutor {
 			}
 		}
 		}
-		// --------------------------------------------/weltraumhelm---------------------------------------------------
-		if (cmd.getName().equalsIgnoreCase("weltraumhelm")) {
-			Bukkit.dispatchCommand(p, "give @s minecraft:iron_helmet{display:{Name:'{\"text\":\"Weltraumhelm\",\"color\":\"light_purple\"}'}} 1");
-		}
-		// -----------------------------------------------/afk----------------------------------------------------------
-		if (label.equalsIgnoreCase("afk")) {
-			if (AFK.afk.contains(p)) {
-				AFK.afk.remove(p);
-				Bukkit.broadcast(Component.text("*"+p.getName()+" ist jetzt nicht mehr AFK").color(NamedTextColor.GRAY));
-			} else {
-				AFK.afk.add(p);
-				Bukkit.broadcast(Component.text("*"+p.getName()+" ist jetzt AFK").color(NamedTextColor.GRAY));
-			}
-		}
 
 		// ----------------------------------------------/tpa------------------------------------------------------------
 		if (!(sender instanceof Player)) {
