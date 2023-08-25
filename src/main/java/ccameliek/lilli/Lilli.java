@@ -30,45 +30,28 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
-	public static TextComponent prefix = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Lilli").color(NamedTextColor.RED)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent adminprefix = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("AdminLilli").color(NamedTextColor.RED)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent kowaiprefix = Component.text("[").color(NamedTextColor.DARK_GRAY)
-			.append(Component.text("Kowaineko").color(NamedTextColor.DARK_AQUA)
-					.append(Component.text("] ").color(NamedTextColor.DARK_GRAY)));
-	public static TextComponent admin = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Owner/in").color(NamedTextColor.LIGHT_PURPLE)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-    public static TextComponent supporter = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Supporter/in").color(NamedTextColor.GREEN)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent spieler = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Spieler/in").color(NamedTextColor.GREEN)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent developer = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Developer/in").color(NamedTextColor.DARK_GREEN)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent moderator = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Moderator/in").color(NamedTextColor.DARK_GREEN)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent stammspieler = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Stammspieler/in").color(NamedTextColor.GOLD)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent spielerplus = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Spieler/in+").color(NamedTextColor.GOLD)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent elite = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Elite").color(NamedTextColor.DARK_AQUA)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent neko = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("Neko").color(NamedTextColor.DARK_PURPLE)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
-	public static TextComponent iwie = Component.text("[").color(NamedTextColor.GRAY)
-			.append(Component.text("dfdsfs").color(NamedTextColor.GREEN)
-					.append(Component.text("] ").color(NamedTextColor.GRAY)));
+    public static HashMap<String, TextComponent> permissionPrefixes = new HashMap<>();
+    static {
+        // Rang prefixes, in Reihenfolge nach Priorität
+        permissionPrefixes.put("lilli.admin", getComponentInBrackets(Component.text("Owner/in").color(NamedTextColor.LIGHT_PURPLE)));
+        permissionPrefixes.put("lilli.supporter", getComponentInBrackets(Component.text("Supporter/in").color(NamedTextColor.GREEN)));
+        permissionPrefixes.put("lilli.dev", getComponentInBrackets(Component.text("Developer/in").color(NamedTextColor.DARK_GREEN)));
+        permissionPrefixes.put("lilli.moderator", getComponentInBrackets(Component.text("Moderator/in").color(NamedTextColor.DARK_GREEN)));
+        permissionPrefixes.put("lilli.stammspieler", getComponentInBrackets(Component.text("Stammspieler/in").color(NamedTextColor.GOLD)));
+        permissionPrefixes.put("lilli.spielerplus", getComponentInBrackets(Component.text("Spieler/in+").color(NamedTextColor.GOLD)));
+        permissionPrefixes.put("lilli.elite", getComponentInBrackets(Component.text("Elite").color(NamedTextColor.DARK_AQUA)));
+        permissionPrefixes.put("lilli.neko", getComponentInBrackets(Component.text("Neko").color(NamedTextColor.DARK_PURPLE)));
+        permissionPrefixes.put("lilli.iwie", getComponentInBrackets(Component.text("dfdsfs").color(NamedTextColor.GREEN)));
+    }
+    public static TextComponent getComponentInBrackets(TextComponent textComponent) {
+        return Component.text("[").color(NamedTextColor.GRAY)
+                .append(textComponent)
+                .append(Component.text("] ").color(NamedTextColor.GRAY));
+    }
+	public static TextComponent prefix = getComponentInBrackets(Component.text("Lilli").color(NamedTextColor.RED));
+	public static TextComponent adminprefix = getComponentInBrackets(Component.text("AdminLilli").color(NamedTextColor.RED));
+	public static TextComponent kowaiprefix = getComponentInBrackets(Component.text("Kowaineko").color(NamedTextColor.DARK_AQUA));
+    public static TextComponent defaultNamePrefix = getComponentInBrackets(Component.text("Spieler/in").color(NamedTextColor.GREEN));
     public static TextComponent name = Component.text(NamedTextColor.AQUA + "");
     private static Lilli instance;
     public final Map<String, Location> backLocation = new HashMap<String, Location>(10);
@@ -143,16 +126,16 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
 
         RangListener teams = new RangListener();
 
-        teams.create("admin", 1, Lilli.admin, null, "Lilli.admin");
-        teams.create("supporter/in", 2, Lilli.supporter, null, "Lilli.support");
-        teams.create("developer/in", 3, Lilli.developer, null, "Lilli.dev");
-        teams.create("moderator/in", 3, Lilli.moderator, null, "Lilli.mod");
-        teams.create("stammspieler/in", 4, Lilli.stammspieler, null, "Lilli.stammspieler");
-        teams.create("spieler/inplus", 4, Lilli.spielerplus, null, "Lilli.spielerplus");
-        teams.create("elite", 4, Lilli.elite, null, "Lilli.elite");
-        teams.create("neko", 4, Lilli.neko, null, "Lilli.neko");
-        teams.create("spieler/in", 5, Lilli.spieler, null, "Lilli.spieler");
-        teams.create("spieler/in", 5, Lilli.spieler, null, null);
+        teams.create("admin", 1, Lilli.permissionPrefixes.get("Lilli.admin"), null, "Lilli.admin");
+        teams.create("supporter/in", 2, Lilli.permissionPrefixes.get("Lilli.support"), null, "Lilli.support");
+        teams.create("developer/in", 3, Lilli.permissionPrefixes.get("Lilli.dev"), null, "Lilli.dev");
+        teams.create("moderator/in", 3, Lilli.permissionPrefixes.get("Lilli.mod"), null, "Lilli.mod");
+        teams.create("stammspieler/in", 4, Lilli.permissionPrefixes.get("Lilli.stammspieler"), null, "Lilli.stammspieler");
+        teams.create("spieler/inplus", 4, Lilli.permissionPrefixes.get("Lilli.spielerplus"), null, "Lilli.spielerplus");
+        teams.create("elite", 4, Lilli.permissionPrefixes.get("Lilli.elite"), null, "Lilli.elite");
+        teams.create("neko", 4, Lilli.permissionPrefixes.get("Lilli.neko"), null, "Lilli.neko");
+        teams.create("spieler/in", 5, Lilli.permissionPrefixes.get("Lilli.spieler"), null, "Lilli.spieler");
+        teams.create("spieler/in", 5, defaultNamePrefix, null, null);
 
         teams.update();
     }

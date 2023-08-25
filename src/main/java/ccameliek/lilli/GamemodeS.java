@@ -9,44 +9,43 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class GamemodeS implements CommandExecutor
-     {
-	     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, String label, String[] args)
-	     {
-		   Player p = (Player) sender;
+public class GamemodeS implements CommandExecutor {
+    private GameMode getGameModeFromString(String gamemode) {
+        switch (gamemode) {
+            case "0" -> {
+                return GameMode.SURVIVAL;
+            }
+            case "1" -> {
+                return GameMode.CREATIVE;
+            }
+            case "2" -> {
+                return GameMode.ADVENTURE;
+            }
+            case "3" -> {
+                return GameMode.SPECTATOR;
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, String label, String[] args) {
+        Player p = (Player) sender;
 
-             if (label.equalsIgnoreCase("gm")) {
-                 if ((p.hasPermission("Lilli.gm")) || (p.isOp())) {
-                     if (args.length == 1) {
-                         if (args[0].equalsIgnoreCase("0")) {
-                             p.setGameMode(GameMode.SURVIVAL);
-                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 0").color(NamedTextColor.GRAY)));
-                             return true;
-                         } else if (args[0].equalsIgnoreCase("1")) {
-                             p.setGameMode(GameMode.CREATIVE);
-                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 1").color(NamedTextColor.GRAY)));;
-                             return true;
-                         } else if (args[0].equalsIgnoreCase("2")) {
-                             p.setGameMode(GameMode.ADVENTURE);
-                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 2").color(NamedTextColor.GRAY)));
-                             return true;
-                         } else if (args[0].equalsIgnoreCase("3")) {
-                             p.setGameMode(GameMode.SPECTATOR);
-                             p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode 3").color(NamedTextColor.GRAY)));
-                             return true;
-                         }
-                     } else {
-                         sender.sendMessage(Lilli.adminprefix.append(Component.text("/gm [0 bis 3]").color(NamedTextColor.GRAY)));
-                         return true;
-                     }
-                 } else {
-                     sender.sendMessage(Lilli.adminprefix.append(Component.text("Du hast nicht die Berechtigung dies zu tun!").color(NamedTextColor.GRAY)));
-                     return true;
-                 }
-             } else {
-                 sender.sendMessage(Lilli.adminprefix.append(Component.text("/gm [0 bis 3]").color(NamedTextColor.GRAY)));
-                 return true;
-             }
-             return false;
-		     }
-	     }
+        if (label.equalsIgnoreCase("gm")) {
+            if (!((p.hasPermission("Lilli.gm")) || (p.isOp()))) {
+                sender.sendMessage(Lilli.adminprefix.append(Component.text("Du hast nicht die Berechtigung dies zu tun!").color(NamedTextColor.RED)));
+                return true;
+            } else if (args.length == 1) {
+                GameMode gameMode = getGameModeFromString(args[0]);
+                if (gameMode != null) {
+                    p.setGameMode(gameMode);
+                    p.sendMessage(Lilli.adminprefix.append(Component.text("Du bist jetzt im GameMode " + args[0]).color(NamedTextColor.GRAY)));
+                    return true;
+                }
+            }
+            sender.sendMessage(Lilli.adminprefix.append(Component.text("Verwende /gm [0 bis 3]").color(NamedTextColor.RED)));
+        }
+        return false;
+    }
+}

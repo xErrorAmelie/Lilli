@@ -12,7 +12,6 @@ public class FlyS implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         Player player = (Player) sender;
         float flyspeed = player.getFlySpeed() * 5;
-        int flyspeedint = (int) flyspeed;
 
         if (command.getName().equalsIgnoreCase("fly")) {
             if (!((sender.hasPermission("Lilli.flyspeed")) || (sender.isOp()))) {
@@ -22,10 +21,8 @@ public class FlyS implements CommandExecutor {
                     float flyargs = Float.parseFloat(args[0]) * 0.20F;
                     player.setFlySpeed(flyargs);
                     player.sendMessage(Lilli.adminprefix.append(Component.text("Du hast deine Fluggeschwindigkeit auf " + args[0] + " gesetzt!").color(NamedTextColor.GREEN)));
-                } else if (args.length > 1) {
-                    sender.sendMessage(Lilli.adminprefix.append(Component.text("Verwende /fly [Zahl]").color(NamedTextColor.RED)));
                 } else {
-                    sender.sendMessage(Lilli.adminprefix.append(Component.text("Du hast die Fluggeschwindigkeit: " + flyspeedint)));
+                    sender.sendMessage(Lilli.adminprefix.append(Component.text("Verwende /fly [Zahl]").color(NamedTextColor.RED)));
                 }
             }
         }
