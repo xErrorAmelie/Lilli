@@ -1,5 +1,7 @@
 package ccameliek.lilli;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -12,31 +14,16 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
 
-public class AFK implements CommandExecutor, Listener {
+public class AFK implements Listener {
 
 	public static ArrayList<Player> afk = new ArrayList<Player>();
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		Player p = (Player) sender;
-		if (label.equalsIgnoreCase("afk")) {
-			if (afk.contains(p)) {
-				afk.remove(p);
-				Bukkit.broadcastMessage(ChatColor.GRAY + "*" + p.getName() + " ist jetzt nicht mehr AFK");
-			} else {
-				afk.add(p);
-				Bukkit.broadcastMessage(ChatColor.GRAY + "*" + p.getName() + " ist jetzt AFK");
-			}
-		}
-		return false;
-	}
 
 	@EventHandler
 	public void onAFK(PlayerMoveEvent event) {
 		Player p = event.getPlayer();
 		if (afk.contains(p)) {
 			afk.remove(p);
-			Bukkit.broadcastMessage(ChatColor.GRAY + "*" + p.getName() + " ist jetzt nicht mehr AFK");
+			Bukkit.broadcast(Component.text("*"+p.getName()+" ist jetzt nicht mehr AFK").color(NamedTextColor.GRAY));
 		}
 	}
 }
