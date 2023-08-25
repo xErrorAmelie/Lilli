@@ -9,9 +9,7 @@ import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -73,12 +71,12 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
 					.append(Component.text("] ").color(NamedTextColor.GRAY)));
     public static TextComponent name = Component.text(NamedTextColor.AQUA + "");
     private static Lilli instance;
-    private final Map<String, Location> mm = new HashMap<String, Location>(10);
+    public final Map<String, Location> backLocation = new HashMap<String, Location>(10);
     private final ConsoleCommandSender console = getServer().getConsoleSender();
     public Component serverpre = Component.text(Objects.requireNonNull(getConfig().getString(".SERVERNAME")).replace("&", "§"));
     HashMap<Player, Player> tpa = new HashMap<Player, Player>();
     ArrayList<Player> tpaSent = new ArrayList<Player>();
-    private boolean perms;
+    public boolean defaultperm;
     public ScoreboardLibrary scoreboardLibrary;
     public Sidebar sidebar;
 
@@ -91,7 +89,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
         getConfig().options().parseComments(true);
         saveDefaultConfig();
         saveConfig();
-        perms = getConfig().getBoolean("Permission");
+        defaultperm = getConfig().getBoolean("Permission");
         instance = this;
         try {
             scoreboardLibrary = ScoreboardLibrary.loadScoreboardLibrary(this);
@@ -137,7 +135,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
         pl.registerEvents(new ChatListener(this), this);
         pl.registerEvents(new Spawn(this), this);
         pl.registerEvents(new BanListener(this), this);
-        pl.registerEvents(new Weltmessage(this), this);
+        pl.registerEvents(new Baurechte(this), this);
         pl.registerEvents(new AFK(), this);
         pl.registerEvents(new Mond(this), this);
         pl.registerEvents(new Scoreboard(this, sidebar), this);
@@ -197,7 +195,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
-        this.mm.put(p.getName(), p.getLocation());
+        this.backLocation.put(p.getName(), p.getLocation());
     }
 
     @EventHandler
@@ -209,25 +207,9 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
-        this.mm.put(event.getPlayer().getName(), event.getPlayer().getLocation());
+        this.backLocation.put(event.getPlayer().getName(), event.getPlayer().getLocation());
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (commandLabel.equalsIgnoreCase("back")) {
-            if (!this.perms || sender.hasPermission("Lilli.back") || sender.isOp()) {
-                if (this.mm.containsKey(sender.getName())) {
-
-                    Player p = (Player) sender;
-                    p.teleport((Location) this.mm.get(p.getName()));
-                } else {
-                    sender.sendMessage(Component.text("Du hast keine letzte Position die gespeichert wurde!").color(NamedTextColor.RED));
-                }
-            } else {
-                sender.sendMessage(Component.text("Du hast keine Rechte dafür!").color(NamedTextColor.RED));
-            }
-        }
-        return false;
-    }
 
 
     // ---------Oh Kinder 3 Uhr Morgens------------------
