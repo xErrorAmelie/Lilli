@@ -2,6 +2,7 @@ package ccameliek.lilli.commands;
 
 import ccameliek.lilli.events.back;
 import ccameliek.lilli.Lilli;
+import ccameliek.lilli.strings.ranks;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -49,7 +50,7 @@ public class Cmds implements Listener, CommandExecutor {
 
                 if (sender.hasPermission("Lilli.reload")) {
                     this.plugin.reloadConfig();
-                    sender.sendMessage(Lilli.prefix + "Plugin reloaded");
+                    sender.sendMessage(ranks.prefix + "Plugin reloaded");
                     return true;
                 }
 
@@ -85,7 +86,7 @@ public class Cmds implements Listener, CommandExecutor {
 
                             } else {
                                 player.teleport(loc);
-                                player.sendMessage(Lilli.prefix.append(Component.text("Du wurdest zum Spawn teleportiert!").color(NamedTextColor.GREEN)));
+                                player.sendMessage(ranks.prefix.append(Component.text("Du wurdest zum Spawn teleportiert!").color(NamedTextColor.GREEN)));
                                 i--;
                                 Bukkit.getScheduler().cancelTask(c);
                                 i = 3;
@@ -173,7 +174,7 @@ public class Cmds implements Listener, CommandExecutor {
         if (player.hasPermission("Lilli.admin.slots") || player.isOp()) {
             if (label.equalsIgnoreCase("slots")) {
                 if (args.length == 0) {
-                    player.sendMessage(Lilli.prefix
+                    player.sendMessage(ranks.prefix
                             .append(Component.text("Der server hat: ").color(NamedTextColor.GREEN)
                                     .append(Component.text(this.plugin.getConfig().getInt(".Slots")).color(NamedTextColor.GRAY)
                                             .append(Component.text(" Slots!").color(NamedTextColor.GREEN)))));
@@ -182,7 +183,7 @@ public class Cmds implements Listener, CommandExecutor {
                     int s = Integer.parseInt(args[0]);
                     this.plugin.getConfig().set(".Slots", s);
                     this.plugin.saveConfig();
-                    player.sendMessage(Lilli.prefix
+                    player.sendMessage(ranks.prefix
                             .append(Component.text("Du hast die Serverslots erfolgreich auf ")).color(NamedTextColor.GREEN)
                             .append(Component.text(s)).color(NamedTextColor.GRAY)
                             .append(Component.text(" Slots gesetzt!").color(NamedTextColor.GREEN)));
@@ -211,15 +212,15 @@ public class Cmds implements Listener, CommandExecutor {
                     });
                 });
             });
-            player.sendMessage(Lilli.prefix.append(Component.text(DeathCount + " nutzlose Mobs wurden beseitigt").color(NamedTextColor.GREEN)));
+            player.sendMessage(ranks.prefix.append(Component.text(DeathCount + " nutzlose Mobs wurden beseitigt").color(NamedTextColor.GREEN)));
             DeathCount = 0;
         }
         // ---------------------------------------------/ping--------------------------------------------------
         if (cmd.getName().equalsIgnoreCase("ping")) {
             if (args.length == 0) {
-                player.sendMessage(Lilli.prefix + "Du hast einen Ping von §c" + player.getPing() + "§7 ms");
+                player.sendMessage(ranks.prefix + "Du hast einen Ping von §c" + player.getPing() + "§7 ms");
             } else {
-                player.sendMessage(Lilli.prefix + "Du hast keine §cRechte §7dafür.");
+                player.sendMessage(ranks.prefix + "Du hast keine §cRechte §7dafür.");
             }
         }
         // -------------------------------------------/mute--------------------------------------------------------------------
@@ -244,7 +245,7 @@ public class Cmds implements Listener, CommandExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(Lilli.prefix.append(Component.text(target.getName() + " wurde gemutet!")));
+                            player.sendMessage(ranks.prefix.append(Component.text(target.getName() + " wurde gemutet!")));
                         }
                     } else {
                         mutecfg.set(".Mute", true);
@@ -253,7 +254,7 @@ public class Cmds implements Listener, CommandExecutor {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        player.sendMessage(Lilli.prefix.append(Component.text(target.getName() + " wurde entmutet!")));
+                        player.sendMessage(ranks.prefix.append(Component.text(target.getName() + " wurde entmutet!")));
                     }
                 } else {
                     player.sendMessage(Component.text("/mute <name>").color(NamedTextColor.RED));
@@ -283,9 +284,9 @@ public class Cmds implements Listener, CommandExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(Lilli.prefix.append(Component.text(target.getName() + " wurde entmutet!")));
+                            player.sendMessage(ranks.prefix.append(Component.text(target.getName() + " wurde entmutet!")));
                             assert targeton != null;
-                            targeton.sendMessage(Lilli.kowaiprefix.append(Component.text("Du wurdest entmutet!")));
+                            targeton.sendMessage(ranks.kowaiprefix.append(Component.text("Du wurdest entmutet!")));
 
                         }
                     } else {
@@ -295,9 +296,9 @@ public class Cmds implements Listener, CommandExecutor {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        player.sendMessage(Lilli.prefix + target.getName() + " wurde entmutet!");
+                        player.sendMessage(ranks.prefix + target.getName() + " wurde entmutet!");
                         assert targeton != null;
-                        targeton.sendMessage(Lilli.kowaiprefix + "Du wurdest entmutet!");
+                        targeton.sendMessage(ranks.kowaiprefix + "Du wurdest entmutet!");
                     }
                 } else {
                     player.sendMessage(Component.text("/unmute <name>").color(NamedTextColor.RED));
