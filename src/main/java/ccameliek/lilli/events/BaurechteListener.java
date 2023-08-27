@@ -1,5 +1,6 @@
-package ccameliek.lilli;
+package ccameliek.lilli.events;
 
+import ccameliek.lilli.Lilli;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,8 +13,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Baurechte implements Listener {
-	public Baurechte(Lilli plugin) {
+public class BaurechteListener implements Listener {
+	public BaurechteListener(Lilli plugin) {
 		this.console = Bukkit.getServer().getConsoleSender();
 
 		this.plugin = plugin;

@@ -9,13 +9,8 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.HashMap;
 
-public class ranks {
-    ConsoleCommandSender console;
+public class prefixes {
 
-    public ranks(Lilli plugin) {
-        this.console = Bukkit.getServer().getConsoleSender();
-
-    }
     public static HashMap<String, TextComponent> permissionPrefixes = new HashMap<>();
     static {
         // Rang prefixes, in Reihenfolge nach Priorität
@@ -29,6 +24,7 @@ public class ranks {
         permissionPrefixes.put("lilli.neko", getComponentInBrackets(Component.text("Neko").color(NamedTextColor.DARK_PURPLE)));
         permissionPrefixes.put("lilli.iwie", getComponentInBrackets(Component.text("dfdsfs").color(NamedTextColor.GREEN)));
     }
+
 
     public static TextComponent prefix = getComponentInBrackets(Component.text("Lilli").color(NamedTextColor.RED));
     public static TextComponent adminprefix = getComponentInBrackets(Component.text("AdminLilli").color(NamedTextColor.RED));

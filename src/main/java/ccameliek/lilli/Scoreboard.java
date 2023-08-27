@@ -3,7 +3,6 @@ package ccameliek.lilli;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -16,9 +15,7 @@ import net.megavex.scoreboardlibrary.api.sidebar.component.animation.SidebarAnim
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,12 +75,8 @@ public class Scoreboard implements Listener {
         componentSidebar.apply(sidebar);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event){
-    }
-
     String PermissionCheck(@NotNull Collection<Player> players) {
-        HashMap<String, String> teams = RangListener.teams;
+        HashMap<String, String> teams = Rangs.teams;
         String currentTeamName = null;
         for (String perm : teams.keySet()) {
             for (Player player : players) {

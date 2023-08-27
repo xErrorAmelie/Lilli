@@ -9,7 +9,7 @@ import java.util.Objects;
 
 import static ccameliek.lilli.Lilli.getInstance;
 
-public class serverList implements Listener {
+public class ServerListener implements Listener {
 
     @EventHandler
     public void ServerPing(ServerListPingEvent event) {
