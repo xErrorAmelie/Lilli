@@ -166,6 +166,7 @@ public class Cmds implements Listener, CommandExecutor {
             }
             return true;
         }
+
         // ---------------------------------------------/slots-------------------------------------------------------------
         if (player.hasPermission("Lilli.admin.slots") || player.isOp()) {
             if (label.equalsIgnoreCase("slots")) {
