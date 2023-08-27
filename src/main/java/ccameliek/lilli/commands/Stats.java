@@ -1,6 +1,5 @@
 package ccameliek.lilli.commands;
 
-import ccameliek.lilli.Lilli;
 import ccameliek.lilli.strings.prefixes;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Stats implements CommandExecutor, Listener {
 
-	public Stats(Lilli plugin) {
+	public Stats() {
 		this.console = Bukkit.getServer().getConsoleSender();
 
 	}

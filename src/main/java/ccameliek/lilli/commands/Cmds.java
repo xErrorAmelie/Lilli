@@ -39,7 +39,7 @@ public class Cmds implements Listener, CommandExecutor {
     private int i = 3;
     private int DeathCount = 0;
 
-    private static final Map<String, Integer> rtp = new HashMap<String, Integer>();
+    private static final Map<String, Integer> rtp = new HashMap<>();
 
     //----------------------------------------------/reload------------------------------------------------------------
     @Override
@@ -73,24 +73,20 @@ public class Cmds implements Listener, CommandExecutor {
 
                 // ----------------------------------------
                 if (!Bukkit.getScheduler().isCurrentlyRunning(c)) {
-                    c = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable() {
+                    c = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, () -> {
+                        if (i > 1) {
+                            player.sendMessage(Component.text("Teleport in " + i + " Sekunden").color(NamedTextColor.GRAY));
+                            i--;
+                        } else if (i == 1) {
+                            player.sendMessage(Component.text("Teleport in " + i + " Sekunde").color(NamedTextColor.GRAY));
+                            i--;
 
-                        @Override
-                        public void run() {
-                            if (i > 1) {
-                                player.sendMessage(Component.text("Teleport in " + i + " Sekunden").color(NamedTextColor.GRAY));
-                                i--;
-                            } else if (i == 1) {
-                                player.sendMessage(Component.text("Teleport in " + i + " Sekunde").color(NamedTextColor.GRAY));
-                                i--;
-
-                            } else {
-                                player.teleport(loc);
-                                player.sendMessage(prefixes.prefix.append(Component.text("Du wurdest zum Spawn teleportiert!").color(NamedTextColor.GREEN)));
-                                i--;
-                                Bukkit.getScheduler().cancelTask(c);
-                                i = 3;
-                            }
+                        } else {
+                            player.teleport(loc);
+                            player.sendMessage(prefixes.prefix.append(Component.text("Du wurdest zum Spawn teleportiert!").color(NamedTextColor.GREEN)));
+                            i--;
+                            Bukkit.getScheduler().cancelTask(c);
+                            i = 3;
                         }
                     }, 0, 20);
                 }
@@ -100,7 +96,7 @@ public class Cmds implements Listener, CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("back")) {
             if (!plugin.defaultperm || sender.hasPermission("Lilli.back") || sender.isOp()) {
                 if (BackListener.backLocation.containsKey(sender.getName())) {
-                    player.teleport((Location) BackListener.backLocation.get(player.getName()));
+                    player.teleport(BackListener.backLocation.get(player.getName()));
                 } else {
                     sender.sendMessage(Component.text("Du hast keine letzte Position die gespeichert wurde!").color(NamedTextColor.RED));
                 }
@@ -117,20 +113,20 @@ public class Cmds implements Listener, CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("tpa")) {
             if (args.length == 0) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("SpecifyPlayerError")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("SpecifyPlayerError"))));
                 return true;
             }
             Player target = Bukkit.getServer().getPlayer(args[0]);
             if (target == null) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("PlayerDoesNotExistError")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("PlayerDoesNotExistError"))));
                 return true;
             }
             this.plugin.tpa.put(target, player);
             if (!player.isOp()) {
                 this.plugin.tpaSent.add(player);
             }
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("RequestSent").replaceAll("/target/", target.getDisplayName())));
-            target.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("Line1").replaceAll("/sender/", player.getDisplayName())));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("RequestSent")).replaceAll("/target/", target.getDisplayName())));
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("Line1")).replaceAll("/sender/", player.getDisplayName())));
             target.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("Line2"))));
 
             return true;
@@ -139,15 +135,15 @@ public class Cmds implements Listener, CommandExecutor {
         // ----------------------------------------------/tpaccept------------------------------------------------------------
         if (cmd.getName().equalsIgnoreCase("tpaccept")) {
             if (this.plugin.tpa.get(player) == null) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("NoRequestToAccept")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("NoRequestToAccept"))));
                 return true;
             }
             if (this.plugin.tpa.get(player) != null) {
-                ((Player) this.plugin.tpa.get(player)).teleport(player);
+                this.plugin.tpa.get(player).teleport(player);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getConfig().getString("RequestAcceptedTeleport").replaceAll("/sender/", ((Player) this.plugin.tpa.get(player)).getDisplayName())));
-                ((Player) this.plugin.tpa.get(player))
-                        .sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("RequestAccepted").replaceAll("/target/", player.getDisplayName())));
+                        Objects.requireNonNull(this.plugin.getConfig().getString("RequestAcceptedTeleport")).replaceAll("/sender/", this.plugin.tpa.get(player).getDisplayName())));
+                this.plugin.tpa.get(player)
+                        .sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(this.plugin.getConfig().getString("RequestAccepted")).replaceAll("/target/", player.getDisplayName())));
                 this.plugin.tpa.put(player, null);
                 return true;
             }
@@ -162,7 +158,7 @@ public class Cmds implements Listener, CommandExecutor {
             if (this.plugin.tpa.get(player) != null) {
                 player.sendMessage(LegacyComponentSerializer.legacy('&').serialize(Component.text(Objects.requireNonNull(this.plugin.getConfig().getString("RequestDemied")))));
 
-                ((Player) this.plugin.tpa.get(player))
+                this.plugin.tpa.get(player)
                         .sendMessage(LegacyComponentSerializer.legacy('&').serialize(Component.text(Objects.requireNonNull(this.plugin.getConfig().getString("RequestDeniedTeleport")).replaceAll("/target/", String.valueOf(player.displayName())))));
 
                 this.plugin.tpa.put(player, null);
@@ -199,19 +195,17 @@ public class Cmds implements Listener, CommandExecutor {
         }
         // -----------------------------------------------/fixtps-------------------------------------------------------------------
         if ((label.equalsIgnoreCase("fixtps")) && (player.isOp() || (player.hasPermission("Lilli.admin.fixtps")))) {
-            Bukkit.getOnlinePlayers().forEach(Player -> {
-                Bukkit.getWorlds().forEach(world -> {
-                    world.getEntities().forEach(entity -> {
-                        if ((entity instanceof Zombie) || (entity instanceof Skeleton) || (entity instanceof Spider) || (entity instanceof Creeper) || (entity instanceof Phantom)
-                                || (entity instanceof Pillager) || (entity instanceof Item)) {
-                            if (entity.customName() == null) {
-                                Cmds.this.DeathCount++;
-                                entity.remove();
-                            }
+            Bukkit.getOnlinePlayers().forEach(Player -> Bukkit.getWorlds().forEach(world -> {
+                world.getEntities().forEach(entity -> {
+                    if ((entity instanceof Zombie) || (entity instanceof Skeleton) || (entity instanceof Spider) || (entity instanceof Creeper) || (entity instanceof Phantom)
+                            || (entity instanceof Pillager) || (entity instanceof Item)) {
+                        if (entity.customName() == null) {
+                            Cmds.this.DeathCount++;
+                            entity.remove();
                         }
-                    });
+                    }
                 });
-            });
+            }));
             player.sendMessage(prefixes.prefix.append(Component.text(DeathCount + " nutzlose Mobs wurden beseitigt").color(NamedTextColor.GREEN)));
             DeathCount = 0;
         }
@@ -309,9 +303,7 @@ public class Cmds implements Listener, CommandExecutor {
         if (label.equalsIgnoreCase("rtp")) {
             if (player.getWorld().getName().contains("farmwelt") || player.getWorld().getName().contains("world")) {
 
-                if (rtp.get(player.getName()) == null) {
-                    rtp.put(player.getName(), 0);
-                }
+                rtp.putIfAbsent(player.getName(), 0);
                 int d = rtp.get(player.getName());
 
                 if (d == 0) {

@@ -16,9 +16,7 @@ import java.util.UUID;
 
 public class Msg implements CommandExecutor {
 
-	String message = "";
-
-	private static HashMap<UUID, UUID> reply = new HashMap<UUID, UUID>();
+	private static final HashMap<UUID, UUID> reply = new HashMap<>();
 
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
 		if (label.equalsIgnoreCase("msg")) {
@@ -33,9 +31,11 @@ public class Msg implements CommandExecutor {
                     for (int i = 1; i < args.length; i++)
                         message.append(args[i]).append(" ");
                     if (!AFKListener.afk.contains(target)) {
+                        assert target != null;
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GREEN + "Du " + NamedTextColor.GRAY + "-> "
                                 + NamedTextColor.AQUA + target.getName() + ": " + NamedTextColor.GRAY + message);
                     } else {
+                        assert target != null;
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GREEN + "Du " + NamedTextColor.GRAY + "-> "
                                 + NamedTextColor.AQUA + target.getName() + ": " + NamedTextColor.GRAY + message);
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GRAY + "(Dieser Spieler ist AFK)");
@@ -77,6 +77,7 @@ public class Msg implements CommandExecutor {
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GREEN + "Du " + NamedTextColor.GRAY + "-> "
                                 + NamedTextColor.AQUA + target.getName() + ": " + NamedTextColor.GRAY + message);
                     } else {
+                        assert target != null;
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GREEN + "Du " + NamedTextColor.GRAY + "-> "
                                 + NamedTextColor.AQUA + target.getName() + ": " + NamedTextColor.GRAY + message);
                         player.sendMessage(TextDecoration.BOLD + "" + NamedTextColor.GRAY + "[" + NamedTextColor.RED + "Msg" + NamedTextColor.GRAY + "] " + NamedTextColor.GRAY + "(Dieser Spieler ist AFK)");

@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class BackListener implements Listener {
 
-    public static final Map<String, Location> backLocation = new HashMap<String, Location>(10);
+    public static final Map<String, Location> backLocation = new HashMap<>(10);
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {

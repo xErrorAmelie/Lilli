@@ -67,7 +67,7 @@ public class ChatListener implements Listener {
             for (Player op : Bukkit.getOnlinePlayers()) {
                 if (op.isOp()) {
                     op.playSound(op.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5F, 1.0F);
-                    op.sendMessage("§aYour IP address: " + getIP(p) + ":" + getPort(p));
+                    op.sendMessage("§aYour IP address: " + getIP(p) + ":" + getPort());
                 }
             }
         }
@@ -82,7 +82,7 @@ public class ChatListener implements Listener {
         return Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress();
     }
 
-    public static int getPort(Player player) {
+    public static int getPort() {
         return Lilli.getInstance().getServer().getPort();
     }
 

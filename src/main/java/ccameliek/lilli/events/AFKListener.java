@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class AFKListener implements Listener {
 
-	public static ArrayList<Player> afk = new ArrayList<Player>();
+	public static ArrayList<Player> afk = new ArrayList<>();
 
 	@EventHandler
 	public void onAFK(PlayerMoveEvent event) {

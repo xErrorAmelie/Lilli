@@ -24,7 +24,7 @@ public class ScoreboardListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         this.plugin.sidebar.addPlayer(event.getPlayer());
-        Bukkit.broadcast(Component.text("Test(!): " + this.plugin.sidebar.players().toString()));
+        Bukkit.broadcast(Component.text("Test(!): " + this.plugin.sidebar.players()));
         (new BukkitRunnable() {
             public void run() {
                 event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.ENDER_SIGNAL, 0);

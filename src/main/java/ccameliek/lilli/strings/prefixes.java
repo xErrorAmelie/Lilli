@@ -1,11 +1,8 @@
 package ccameliek.lilli.strings;
 
-import ccameliek.lilli.Lilli;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.HashMap;
 

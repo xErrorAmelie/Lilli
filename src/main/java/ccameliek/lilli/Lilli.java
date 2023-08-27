@@ -22,8 +22,8 @@ import java.util.logging.Level;
 public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
     private static Lilli instance;
     public Sidebar sidebar;
-    public HashMap<Player, Player> tpa = new HashMap<Player, Player>();
-    public ArrayList<Player> tpaSent = new ArrayList<Player>();
+    public HashMap<Player, Player> tpa = new HashMap<>();
+    public ArrayList<Player> tpaSent = new ArrayList<>();
     public boolean defaultperm;
     public ScoreboardLibrary scoreboardLibrary;
     public Component serverpre = Component.text(Objects.requireNonNull(getConfig().getString(".SERVERNAME")).replace("&", "§"));
@@ -119,7 +119,7 @@ public class Lilli extends JavaPlugin implements Listener, CommandExecutor {
         Objects.requireNonNull(getCommand("r")).setExecutor(new Msg());
         Objects.requireNonNull(getCommand("fixtps")).setExecutor(new Cmds(this));
         Objects.requireNonNull(getCommand("afk")).setExecutor(new Cmds(this));
-        Objects.requireNonNull(getCommand("stats")).setExecutor(new Stats(this));
+        Objects.requireNonNull(getCommand("stats")).setExecutor(new Stats());
         //Objects.requireNonNull(getCommand("showtps")).setExecutor(new Scoreboard(this));
         Objects.requireNonNull(getCommand("mute")).setExecutor(new Cmds(this));
         Objects.requireNonNull(getCommand("unmute")).setExecutor(new Cmds(this));
