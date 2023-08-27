@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import ccameliek.lilli.strings.*;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,21 +31,12 @@ public class ChatListener implements Listener {
     ConsoleCommandSender console;
     private final Lilli plugin;
 
-    private Component permprefix (Player player) {
-        for(String permission: Lilli.permissionPrefixes.keySet()){
-            if(player.hasPermission(permission)) {
-                return Lilli.permissionPrefixes.get(permission);
-            }
-        }
-        return Lilli.defaultNamePrefix;
-    }
-
     @EventHandler
     public void onChat(AsyncChatEvent e) {
         Player p = e.getPlayer();
         Component Msg = e.message();
         if (p.hasPermission("Lilli.admin")) {
-            e.message(permprefix(p)
+            e.message(this.plugin.permprefix(p)
                     .append(Component.text(p.getName()).color(NamedTextColor.AQUA))
                     .append(Component.text(": ").color(NamedTextColor.GRAY))
                     .append(Msg.color(NamedTextColor.WHITE)));
@@ -52,7 +44,7 @@ public class ChatListener implements Listener {
             YamlConfiguration mutecfg = YamlConfiguration.loadConfiguration(mute);
             if (mutecfg.getBoolean(".Mute")) {
                 e.setCancelled(true);
-                p.sendMessage(NamedTextColor.RED + Lilli.kowaiprefix.toString() + "Du bist gemutet");
+                p.sendMessage(NamedTextColor.RED + ranks.kowaiprefix.toString() + "Du bist gemutet");
             }
         }
     }
@@ -61,15 +53,15 @@ public class ChatListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         final Player p = e.getPlayer();
         e.joinMessage(Component.text(">> ").color(NamedTextColor.DARK_GRAY)
-                .append(permprefix(p))
+                .append(this.plugin.permprefix(p))
                 .append(Component.text(p.getName()).color(NamedTextColor.AQUA))
                 .append(Component.text(" hat den Server betreten!").color(NamedTextColor.GREEN)));
-        p.playerListName(permprefix(p)
+        p.playerListName(this.plugin.permprefix(p)
                 .append(Component.text(p.getName()).color(NamedTextColor.AQUA)));
-        p.displayName(permprefix(p)
+        p.displayName(this.plugin.permprefix(p)
                 .append(Component.text(p.getName()).color(NamedTextColor.AQUA)));
         if (!p.hasPlayedBefore()) {
-            e.joinMessage(Lilli.name
+            e.joinMessage(ranks.name
                     .append(Component.text(p.getName()).color(NamedTextColor.AQUA))
                     .append(Component.text(" ist neu hier!").color(NamedTextColor.GREEN))
                     .append(Component.text(".").decorate(TextDecoration.OBFUSCATED)));
@@ -102,7 +94,7 @@ public class ChatListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         event.quitMessage(Component.text("<< ").color(NamedTextColor.DARK_GRAY)
-                .append(permprefix(player)).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                .append(this.plugin.permprefix(player)).append(Component.text(player.getName()).color(NamedTextColor.GRAY))
                 .append(Component.text(" hat den Server verlassen!").color(NamedTextColor.RED)));
 
     }

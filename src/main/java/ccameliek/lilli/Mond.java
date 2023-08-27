@@ -1,5 +1,6 @@
 package ccameliek.lilli;
 
+import ccameliek.lilli.strings.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,10 +27,10 @@ public class Mond implements Listener, CommandExecutor {
 	}
 
 	ConsoleCommandSender console;
-	private Lilli plugin;
+	private final Lilli plugin;
 	int Helmet = 0;
 
-	private static Map<String, Boolean> message = new HashMap<String, Boolean>();
+	private static final Map<String, Boolean> message = new HashMap<String, Boolean>();
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player p = (Player) sender;
@@ -52,7 +53,7 @@ public class Mond implements Listener, CommandExecutor {
 					p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 0));
 					for (Player p1 : Bukkit.getOnlinePlayers()) {
 						if (p1.isOp()) {
-							p1.sendMessage(Lilli.prefix + e.getPlayer().getDisplayName() + ChatColor.GRAY + " hat den Mond betreten!");
+							p1.sendMessage(ranks.prefix + e.getPlayer().getDisplayName() + ChatColor.GRAY + " hat den Mond betreten!");
 						}
 					}
 					Helmet = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -71,13 +72,13 @@ public class Mond implements Listener, CommandExecutor {
 								// p.getInventory().getHelmet().getItemMeta().getDisplayName());
 								if (p.getInventory().getHelmet().getType().toString().contains("IRON_HELMET")
 										&& (p.getInventory().getHelmet().getItemMeta().getDisplayName().contains(ChatColor.LIGHT_PURPLE + "Weltraumhelm"))) {
-									if (message.get("Helmetmessage") == false) {
+									if (!message.get("Helmetmessage")) {
 										p.sendMessage(ChatColor.GREEN + "Du hast einen Weltraumhelm auf, du verlierst keine Luft!");
 										message.put("Helmetmessage", true);
 										message.put("NoHelmetmessage", false);
 									}
 								} else {
-									if (message.get("NoHelmetmessage") == false) {
+									if (!message.get("NoHelmetmessage")) {
 										p.sendMessage(ChatColor.RED + "Du hast keinen Weltraumhelm auf!");
 										message.put("NoHelmetmessage", true);
 										message.put("Helmetmessage", false);
@@ -88,7 +89,7 @@ public class Mond implements Listener, CommandExecutor {
 									}
 								}
 							} else {
-								if (message.get("NoHelmetmessage") == false) {
+								if (!message.get("NoHelmetmessage")) {
 									p.sendMessage(ChatColor.RED + "Du hast keinen Weltraumhelm auf!");
 									message.put("NoHelmetmessage", true);
 									message.put("Helmetmessage", false);
